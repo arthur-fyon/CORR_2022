@@ -25,4 +25,4 @@ notebook() # Or jupyterlab()
 
 Then simply browse to the *.ipynb* files to run them. If it is the first time you ever launch Jupyter, Julia will ask you if you want to install it through Conda. Accept to start the installation of Jupyter.
 
-Codes written by Arthur Fyon
+**Codes written by Arthur Fyon**
