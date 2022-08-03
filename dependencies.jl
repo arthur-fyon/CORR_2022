@@ -1,7 +1,7 @@
 # This file aims at installing all used packages in this work
-
 using Pkg
 
+Pkg.add("IJulia")
 Pkg.add("DifferentialEquations")
 Pkg.add("Plots")
 Pkg.add("Polynomials")
