@@ -16,7 +16,7 @@ In this repository, you have one folder concerning the codes for the stomatogast
 
 In both folders, you will find *.jl* files in which the model equations or the DICs method is implemented, as well as other useful functions. You will also find a *data* folder in which all the data necessary to reproduce the figures of the article are already generated. Finally, two notebooks *ipynb* are also available. One is called data generator, this one contains all the codes necessary to generate all the *.dat* files in the *data* folder, this may take a while depending on your computer. The other one is called *plots* and basically include the *.dat* files to produce the figures of the article.
 
-## Special note to launch a notebook using Julia
+## Special note to launch Jupyter with Julia
 To open JupyterNotebook/JupyterLab using Julia, execute in Julia
 ```jl
 using IJulia
