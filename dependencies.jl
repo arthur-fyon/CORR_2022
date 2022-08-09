@@ -14,6 +14,3 @@ Pkg.add("Random")
 Pkg.add("ProgressMeter")
 Pkg.add("Printf")
 Pkg.add("LinearAlgebra")
-
-# Uncomment the following lines if you want to update your packages
-#Pkg.update()
