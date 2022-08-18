@@ -205,7 +205,7 @@ end
 function scatter_matrix(dir_val, nb_channels, g_all, mean_vec, Na_max, Kd_max, CaL_max,
                         CaN_max, ERG_max, leak_max, s1, s2, color_p, m_shape)
 
-    pNaKd = scatter(g_all[:, 1], g_all[:, 2], label="", markerstrokewidth=0.1, markershape=m_shape,
+    pNaKd = scatter(g_all[:, 1], g_all[:, 2], label="", markerstrokewidth=0., markershape=m_shape,
                     color=color_p, grid=false, ticks=false, tickfontsize=10, xrotation=45.0, guidefontsize=18)
     ylabel!(L"\bar{g}_{Kd}")
     xlims!((0, Na_max))
@@ -221,7 +221,7 @@ function scatter_matrix(dir_val, nb_channels, g_all, mean_vec, Na_max, Kd_max, C
 
 
 
-    pNaCaL = scatter(g_all[:, 1], g_all[:, 3], label="", markerstrokewidth=0.1, markershape=m_shape,
+    pNaCaL = scatter(g_all[:, 1], g_all[:, 3], label="", markerstrokewidth=0., markershape=m_shape,
                      color=color_p, grid=false, ticks=false, tickfontsize=10, guidefontsize=18)
     ylabel!(L"\bar{g}_{CaL}")
     xlims!((0, Na_max))
@@ -237,7 +237,7 @@ function scatter_matrix(dir_val, nb_channels, g_all, mean_vec, Na_max, Kd_max, C
 
 
 
-    pNaCaN = scatter(g_all[:, 1], g_all[:, 4], label="", markerstrokewidth=0.1, markershape=m_shape,
+    pNaCaN = scatter(g_all[:, 1], g_all[:, 4], label="", markerstrokewidth=0., markershape=m_shape,
                      color=color_p, grid=false, ticks=false, tickfontsize=10, guidefontsize=18)
     ylabel!(L"\bar{g}_{CaN}")
     xlims!((0, Na_max))
@@ -253,7 +253,7 @@ function scatter_matrix(dir_val, nb_channels, g_all, mean_vec, Na_max, Kd_max, C
 
 
 
-    pNaERG = scatter(g_all[:, 1], g_all[:, 5], label="", markerstrokewidth=0.1, markershape=m_shape,
+    pNaERG = scatter(g_all[:, 1], g_all[:, 5], label="", markerstrokewidth=0., markershape=m_shape,
                      color=color_p, grid=false, ticks=false, tickfontsize=10, guidefontsize=18)
     ylabel!(L"\bar{g}_{ERG}")
     xlims!((0, Na_max))
@@ -269,7 +269,7 @@ function scatter_matrix(dir_val, nb_channels, g_all, mean_vec, Na_max, Kd_max, C
 
 
 
-    pNaleak = scatter(g_all[:, 1], g_all[:, 6], label="", markerstrokewidth=0.1, markershape=m_shape,
+    pNaleak = scatter(g_all[:, 1], g_all[:, 6], label="", markerstrokewidth=0., markershape=m_shape,
                       color=color_p, grid=false, ticks=false, tickfontsize=10, xrotation=45.0, guidefontsize=18)
     ylabel!(L"g_{leak}")
     xlabel!(L"\bar{g}_{Na}")
@@ -285,7 +285,7 @@ function scatter_matrix(dir_val, nb_channels, g_all, mean_vec, Na_max, Kd_max, C
           arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
 
 
-    pKdCaL = scatter(g_all[:, 2], g_all[:, 3], label="", markerstrokewidth=0.1, tickfontsize=10, markershape=m_shape,
+    pKdCaL = scatter(g_all[:, 2], g_all[:, 3], label="", markerstrokewidth=0., tickfontsize=10, markershape=m_shape,
                      color=color_p, grid=false, ticks=false, guidefontsize=18)
     xlims!((0, Kd_max))
     ylims!((0, CaL_max))
@@ -300,7 +300,7 @@ function scatter_matrix(dir_val, nb_channels, g_all, mean_vec, Na_max, Kd_max, C
 
 
 
-    pKdCaN = scatter(g_all[:, 2], g_all[:, 4], label="", markerstrokewidth=0.1, tickfontsize=10, markershape=m_shape,
+    pKdCaN = scatter(g_all[:, 2], g_all[:, 4], label="", markerstrokewidth=0., tickfontsize=10, markershape=m_shape,
                      color=color_p, grid=false, ticks=false, guidefontsize=18)
     xlims!((0, Kd_max))
     ylims!((0, CaN_max))
@@ -315,7 +315,7 @@ function scatter_matrix(dir_val, nb_channels, g_all, mean_vec, Na_max, Kd_max, C
 
 
 
-    pKdERG = scatter(g_all[:, 2], g_all[:, 5], label="", markerstrokewidth=0.1, tickfontsize=10, markershape=m_shape,
+    pKdERG = scatter(g_all[:, 2], g_all[:, 5], label="", markerstrokewidth=0., tickfontsize=10, markershape=m_shape,
                      color=color_p, grid=false, ticks=false, guidefontsize=18)
     xlims!((0, Kd_max))
     ylims!((0, ERG_max))
@@ -330,7 +330,7 @@ function scatter_matrix(dir_val, nb_channels, g_all, mean_vec, Na_max, Kd_max, C
 
 
 
-    pKdleak = scatter(g_all[:, 2], g_all[:, 6], label="", markerstrokewidth=0.1, tickfontsize=10, markershape=m_shape,
+    pKdleak = scatter(g_all[:, 2], g_all[:, 6], label="", markerstrokewidth=0., tickfontsize=10, markershape=m_shape,
                       color=color_p, grid=false, ticks=false, xrotation=45.0, guidefontsize=18)
     xlims!((0, Kd_max))
     xlabel!(L"\bar{g}_{Kd}")
@@ -346,7 +346,7 @@ function scatter_matrix(dir_val, nb_channels, g_all, mean_vec, Na_max, Kd_max, C
 
 
 
-    pCaLCaN = scatter(g_all[:, 3], g_all[:, 4], label="", markerstrokewidth=0.1, tickfontsize=10, markershape=m_shape,
+    pCaLCaN = scatter(g_all[:, 3], g_all[:, 4], label="", markerstrokewidth=0., tickfontsize=10, markershape=m_shape,
                       color=color_p, grid=false, ticks=false, guidefontsize=18)
     xlims!((0, CaL_max))
     ylims!((0, CaN_max))
@@ -361,7 +361,7 @@ function scatter_matrix(dir_val, nb_channels, g_all, mean_vec, Na_max, Kd_max, C
 
 
 
-    pCaLERG = scatter(g_all[:, 3], g_all[:, 5], label="", markerstrokewidth=0.1, tickfontsize=10, markershape=m_shape,
+    pCaLERG = scatter(g_all[:, 3], g_all[:, 5], label="", markerstrokewidth=0., tickfontsize=10, markershape=m_shape,
                       color=color_p, grid=false, ticks=false, guidefontsize=18)
     xlims!((0, CaL_max))
     ylims!((0, ERG_max))
@@ -376,7 +376,7 @@ function scatter_matrix(dir_val, nb_channels, g_all, mean_vec, Na_max, Kd_max, C
 
 
 
-    pCaLleak = scatter(g_all[:, 3], g_all[:, 6], label="", markerstrokewidth=0.1, tickfontsize=10, markershape=m_shape,
+    pCaLleak = scatter(g_all[:, 3], g_all[:, 6], label="", markerstrokewidth=0., tickfontsize=10, markershape=m_shape,
                        color=color_p, grid=false, ticks=false, xrotation=45.0, guidefontsize=18)
     xlims!((0, CaL_max))
     xlabel!(L"\bar{g}_{CaL}")
@@ -392,7 +392,7 @@ function scatter_matrix(dir_val, nb_channels, g_all, mean_vec, Na_max, Kd_max, C
 
 
 
-    pCaNERG = scatter(g_all[:, 4], g_all[:, 5], label="", markerstrokewidth=0.1, tickfontsize=10, markershape=m_shape,
+    pCaNERG = scatter(g_all[:, 4], g_all[:, 5], label="", markerstrokewidth=0., tickfontsize=10, markershape=m_shape,
                       color=color_p, grid=false, ticks=false, guidefontsize=18)
     xlims!((0, CaN_max))
     ylims!((0, ERG_max))
@@ -407,7 +407,7 @@ function scatter_matrix(dir_val, nb_channels, g_all, mean_vec, Na_max, Kd_max, C
 
 
 
-    pCaNleak = scatter(g_all[:, 4], g_all[:, 6], label="", markerstrokewidth=0.1, tickfontsize=10, markershape=m_shape,
+    pCaNleak = scatter(g_all[:, 4], g_all[:, 6], label="", markerstrokewidth=0., tickfontsize=10, markershape=m_shape,
                        color=color_p, grid=false, ticks=false, xrotation=45.0, guidefontsize=18)
     xlims!((0, CaN_max))
     xlabel!(L"\bar{g}_{CaN}")
@@ -423,7 +423,7 @@ function scatter_matrix(dir_val, nb_channels, g_all, mean_vec, Na_max, Kd_max, C
 
 
 
-    pERGleak = scatter(g_all[:, 5], g_all[:, 6], label="", markerstrokewidth=0.1, tickfontsize=10, markershape=m_shape,
+    pERGleak = scatter(g_all[:, 5], g_all[:, 6], label="", markerstrokewidth=0., tickfontsize=10, markershape=m_shape,
                        color=color_p, grid=false, ticks=false, xrotation=45.0, guidefontsize=18)
     xlims!((0, ERG_max))
     xlabel!(L"\bar{g}_{ERG}")
@@ -451,7 +451,7 @@ end
 function scatter_matrix_zcolor(dir_val, nb_channels, g_all, mean_vec, Na_max, Kd_max, CaL_max,
                         CaN_max, ERG_max, leak_max, s1, s2, color_p, m_shape)
 
-    pNaKd = scatter(g_all[:, 1], g_all[:, 2], label="", markerstrokewidth=0.1, markershape=m_shape, legend=false, c=cgrad(:thermal, rev=false),
+    pNaKd = scatter(g_all[:, 1], g_all[:, 2], label="", markerstrokewidth=0., markershape=m_shape, legend=false, c=cgrad(:thermal, rev=false),
                     zcolor=color_p, grid=false, ticks=false, tickfontsize=10, xrotation=45.0, guidefontsize=18)
     ylabel!(L"\bar{g}_{Kd}")
     xlims!((0, Na_max))
@@ -467,7 +467,7 @@ function scatter_matrix_zcolor(dir_val, nb_channels, g_all, mean_vec, Na_max, Kd
 
 
 
-    pNaCaL = scatter(g_all[:, 1], g_all[:, 3], label="", markerstrokewidth=0.1, markershape=m_shape, legend=false, c=cgrad(:thermal, rev=false),
+    pNaCaL = scatter(g_all[:, 1], g_all[:, 3], label="", markerstrokewidth=0., markershape=m_shape, legend=false, c=cgrad(:thermal, rev=false),
                      zcolor=color_p, grid=false, ticks=false, tickfontsize=10, guidefontsize=18)
     ylabel!(L"\bar{g}_{CaL}")
     xlims!((0, Na_max))
@@ -483,7 +483,7 @@ function scatter_matrix_zcolor(dir_val, nb_channels, g_all, mean_vec, Na_max, Kd
 
 
 
-    pNaCaN = scatter(g_all[:, 1], g_all[:, 4], label="", markerstrokewidth=0.1, markershape=m_shape, legend=false, c=cgrad(:thermal, rev=false),
+    pNaCaN = scatter(g_all[:, 1], g_all[:, 4], label="", markerstrokewidth=0., markershape=m_shape, legend=false, c=cgrad(:thermal, rev=false),
                      zcolor=color_p, grid=false, ticks=false, tickfontsize=10, guidefontsize=18)
     ylabel!(L"\bar{g}_{CaN}")
     xlims!((0, Na_max))
@@ -499,7 +499,7 @@ function scatter_matrix_zcolor(dir_val, nb_channels, g_all, mean_vec, Na_max, Kd
 
 
 
-    pNaERG = scatter(g_all[:, 1], g_all[:, 5], label="", markerstrokewidth=0.1, markershape=m_shape, legend=false, c=cgrad(:thermal, rev=false),
+    pNaERG = scatter(g_all[:, 1], g_all[:, 5], label="", markerstrokewidth=0., markershape=m_shape, legend=false, c=cgrad(:thermal, rev=false),
                      zcolor=color_p, grid=false, ticks=false, tickfontsize=10, guidefontsize=18)
     ylabel!(L"\bar{g}_{ERG}")
     xlims!((0, Na_max))
@@ -515,7 +515,7 @@ function scatter_matrix_zcolor(dir_val, nb_channels, g_all, mean_vec, Na_max, Kd
 
 
 
-    pNaleak = scatter(g_all[:, 1], g_all[:, 6], label="", markerstrokewidth=0.1, markershape=m_shape, legend=false, c=cgrad(:thermal, rev=false),
+    pNaleak = scatter(g_all[:, 1], g_all[:, 6], label="", markerstrokewidth=0., markershape=m_shape, legend=false, c=cgrad(:thermal, rev=false),
                       zcolor=color_p, grid=false, ticks=false, tickfontsize=10, xrotation=45.0, guidefontsize=18)
     ylabel!(L"g_{leak}")
     xlabel!(L"\bar{g}_{Na}")
@@ -531,7 +531,7 @@ function scatter_matrix_zcolor(dir_val, nb_channels, g_all, mean_vec, Na_max, Kd
           arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
 
 
-    pKdCaL = scatter(g_all[:, 2], g_all[:, 3], label="", markerstrokewidth=0.1, tickfontsize=10, markershape=m_shape, legend=false, c=cgrad(:thermal, rev=false),
+    pKdCaL = scatter(g_all[:, 2], g_all[:, 3], label="", markerstrokewidth=0., tickfontsize=10, markershape=m_shape, legend=false, c=cgrad(:thermal, rev=false),
                      zcolor=color_p, grid=false, ticks=false, guidefontsize=18)
     xlims!((0, Kd_max))
     ylims!((0, CaL_max))
@@ -546,7 +546,7 @@ function scatter_matrix_zcolor(dir_val, nb_channels, g_all, mean_vec, Na_max, Kd
 
 
 
-    pKdCaN = scatter(g_all[:, 2], g_all[:, 4], label="", markerstrokewidth=0.1, tickfontsize=10, markershape=m_shape, legend=false, c=cgrad(:thermal, rev=false),
+    pKdCaN = scatter(g_all[:, 2], g_all[:, 4], label="", markerstrokewidth=0., tickfontsize=10, markershape=m_shape, legend=false, c=cgrad(:thermal, rev=false),
                      zcolor=color_p, grid=false, ticks=false, guidefontsize=18)
     xlims!((0, Kd_max))
     ylims!((0, CaN_max))
@@ -561,7 +561,7 @@ function scatter_matrix_zcolor(dir_val, nb_channels, g_all, mean_vec, Na_max, Kd
 
 
 
-    pKdERG = scatter(g_all[:, 2], g_all[:, 5], label="", markerstrokewidth=0.1, tickfontsize=10, markershape=m_shape, legend=false, c=cgrad(:thermal, rev=false),
+    pKdERG = scatter(g_all[:, 2], g_all[:, 5], label="", markerstrokewidth=0., tickfontsize=10, markershape=m_shape, legend=false, c=cgrad(:thermal, rev=false),
                      zcolor=color_p, grid=false, ticks=false, guidefontsize=18)
     xlims!((0, Kd_max))
     ylims!((0, ERG_max))
@@ -576,7 +576,7 @@ function scatter_matrix_zcolor(dir_val, nb_channels, g_all, mean_vec, Na_max, Kd
 
 
 
-    pKdleak = scatter(g_all[:, 2], g_all[:, 6], label="", markerstrokewidth=0.1, tickfontsize=10, markershape=m_shape, legend=false, c=cgrad(:thermal, rev=false),
+    pKdleak = scatter(g_all[:, 2], g_all[:, 6], label="", markerstrokewidth=0., tickfontsize=10, markershape=m_shape, legend=false, c=cgrad(:thermal, rev=false),
                       zcolor=color_p, grid=false, ticks=false, xrotation=45.0, guidefontsize=18)
     xlims!((0, Kd_max))
     xlabel!(L"\bar{g}_{Kd}")
@@ -592,7 +592,7 @@ function scatter_matrix_zcolor(dir_val, nb_channels, g_all, mean_vec, Na_max, Kd
 
 
 
-    pCaLCaN = scatter(g_all[:, 3], g_all[:, 4], label="", markerstrokewidth=0.1, tickfontsize=10, markershape=m_shape, legend=false, c=cgrad(:thermal, rev=false),
+    pCaLCaN = scatter(g_all[:, 3], g_all[:, 4], label="", markerstrokewidth=0., tickfontsize=10, markershape=m_shape, legend=false, c=cgrad(:thermal, rev=false),
                       zcolor=color_p, grid=false, ticks=false, guidefontsize=18)
     xlims!((0, CaL_max))
     ylims!((0, CaN_max))
@@ -607,7 +607,7 @@ function scatter_matrix_zcolor(dir_val, nb_channels, g_all, mean_vec, Na_max, Kd
 
 
 
-    pCaLERG = scatter(g_all[:, 3], g_all[:, 5], label="", markerstrokewidth=0.1, tickfontsize=10, markershape=m_shape, legend=false, c=cgrad(:thermal, rev=false),
+    pCaLERG = scatter(g_all[:, 3], g_all[:, 5], label="", markerstrokewidth=0., tickfontsize=10, markershape=m_shape, legend=false, c=cgrad(:thermal, rev=false),
                       zcolor=color_p, grid=false, ticks=false, guidefontsize=18)
     xlims!((0, CaL_max))
     ylims!((0, ERG_max))
@@ -622,7 +622,7 @@ function scatter_matrix_zcolor(dir_val, nb_channels, g_all, mean_vec, Na_max, Kd
 
 
 
-    pCaLleak = scatter(g_all[:, 3], g_all[:, 6], label="", markerstrokewidth=0.1, tickfontsize=10, markershape=m_shape, legend=false, c=cgrad(:thermal, rev=false),
+    pCaLleak = scatter(g_all[:, 3], g_all[:, 6], label="", markerstrokewidth=0., tickfontsize=10, markershape=m_shape, legend=false, c=cgrad(:thermal, rev=false),
                        zcolor=color_p, grid=false, ticks=false, xrotation=45.0, guidefontsize=18)
     xlims!((0, CaL_max))
     xlabel!(L"\bar{g}_{CaL}")
@@ -638,7 +638,7 @@ function scatter_matrix_zcolor(dir_val, nb_channels, g_all, mean_vec, Na_max, Kd
 
 
 
-    pCaNERG = scatter(g_all[:, 4], g_all[:, 5], label="", markerstrokewidth=0.1, tickfontsize=10, markershape=m_shape, legend=false, c=cgrad(:thermal, rev=false),
+    pCaNERG = scatter(g_all[:, 4], g_all[:, 5], label="", markerstrokewidth=0., tickfontsize=10, markershape=m_shape, legend=false, c=cgrad(:thermal, rev=false),
                       zcolor=color_p, grid=false, ticks=false, guidefontsize=18)
     xlims!((0, CaN_max))
     ylims!((0, ERG_max))
@@ -653,7 +653,7 @@ function scatter_matrix_zcolor(dir_val, nb_channels, g_all, mean_vec, Na_max, Kd
 
 
 
-    pCaNleak = scatter(g_all[:, 4], g_all[:, 6], label="", markerstrokewidth=0.1, tickfontsize=10, markershape=m_shape, legend=false, c=cgrad(:thermal, rev=false),
+    pCaNleak = scatter(g_all[:, 4], g_all[:, 6], label="", markerstrokewidth=0., tickfontsize=10, markershape=m_shape, legend=false, c=cgrad(:thermal, rev=false),
                        zcolor=color_p, grid=false, ticks=false, xrotation=45.0, guidefontsize=18)
     xlims!((0, CaN_max))
     xlabel!(L"\bar{g}_{CaN}")
@@ -669,7 +669,7 @@ function scatter_matrix_zcolor(dir_val, nb_channels, g_all, mean_vec, Na_max, Kd
 
 
 
-    pERGleak = scatter(g_all[:, 5], g_all[:, 6], label="", markerstrokewidth=0.1, tickfontsize=10, markershape=m_shape, legend=false, c=cgrad(:thermal, rev=false),
+    pERGleak = scatter(g_all[:, 5], g_all[:, 6], label="", markerstrokewidth=0., tickfontsize=10, markershape=m_shape, legend=false, c=cgrad(:thermal, rev=false),
                        zcolor=color_p, grid=false, ticks=false, xrotation=45.0, guidefontsize=18)
     xlims!((0, ERG_max))
     xlabel!(L"\bar{g}_{ERG}")
