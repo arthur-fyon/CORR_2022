@@ -138,7 +138,7 @@ function heatmap_dir(dir_val, nb_channels)
     str_val = @sprintf "%.2e" val
     p1 = heatmap(1:1, 1:nb_channels, reshape(dir_val.vectors[:, nb_channels - bin + 1], nb_channels, 1),
                  aspect_ratio=1, size=(200, 500), grid=false, xlabel=L"$\lambda = %$str_val$",
-                 axis=false, ticks=false, c=cgrad([:dodgerblue3, :gray93, :orangered3]),
+                 axis=false, ticks=false, c=cgrad([:orangered3, :gray93, :orangered3]),
                  colorbar=false, clim=(-1, 1),
                  yticks=(1:nb_channels, ["gNa", "gCaT", "gCaS", "gA", "gKCa", "gKd", "gH", "gleak"]))
 
@@ -148,7 +148,7 @@ function heatmap_dir(dir_val, nb_channels)
     str_val = @sprintf "%.2e" val
     p2 = heatmap(1:1, 1:nb_channels, reshape(dir_val.vectors[:, nb_channels - bin + 1], nb_channels, 1),
                  aspect_ratio=1, size=(200, 500), grid=false, xlabel=L"$\lambda = %$str_val$",
-                 axis=false, ticks=false, c=cgrad([:dodgerblue3, :gray93, :orangered3]),
+                 axis=false, ticks=false, c=cgrad([:orangered3, :gray93, :orangered3]),
                  colorbar=false, clim=(-1, 1))
 
     # Third bin
@@ -157,7 +157,7 @@ function heatmap_dir(dir_val, nb_channels)
     str_val = @sprintf "%.2e" val
     p3 = heatmap(1:1, 1:nb_channels, reshape(dir_val.vectors[:, nb_channels - bin + 1], nb_channels, 1),
                  aspect_ratio=1, size=(200, 500), grid=false, xlabel=L"$\lambda = %$str_val$",
-                 axis=false, ticks=false, c=cgrad([:dodgerblue3, :gray93, :orangered3]),
+                 axis=false, ticks=false, c=cgrad([:orangered3, :gray93, :orangered3]),
                  colorbar=false, clim=(-1, 1))
 
     # Fourth bin
@@ -166,7 +166,7 @@ function heatmap_dir(dir_val, nb_channels)
     str_val = @sprintf "%.2e" val
     p4 = heatmap(1:1, 1:nb_channels, reshape(dir_val.vectors[:, nb_channels - bin + 1], nb_channels, 1),
                  aspect_ratio=1, size=(200, 500), grid=false, xlabel=L"$\lambda = %$str_val$",
-                 axis=false, ticks=false, c=cgrad([:dodgerblue3, :gray93, :orangered3]),
+                 axis=false, ticks=false, c=cgrad([:orangered3, :gray93, :orangered3]),
                  colorbar=false, clim=(-1, 1))
 
     # Fifth bin
@@ -175,7 +175,7 @@ function heatmap_dir(dir_val, nb_channels)
     str_val = @sprintf "%.2e" val
     p5 = heatmap(1:1, 1:nb_channels, reshape(dir_val.vectors[:, nb_channels - bin + 1], nb_channels, 1),
                  aspect_ratio=1, size=(200, 500), grid=false, xlabel=L"$\lambda = %$str_val$",
-                 axis=false, ticks=false, c=cgrad([:dodgerblue3, :gray93, :orangered3]),
+                 axis=false, ticks=false, c=cgrad([:orangered3, :gray93, :orangered3]),
                  colorbar=false, clim=(-1, 1))
 
     # Sixth bin
@@ -184,7 +184,7 @@ function heatmap_dir(dir_val, nb_channels)
     str_val = @sprintf "%.2e" val
     p6 = heatmap(1:1, 1:nb_channels, reshape(dir_val.vectors[:, nb_channels - bin + 1], nb_channels, 1),
                  aspect_ratio=1, size=(200, 500), grid=false, xlabel=L"$\lambda = %$str_val$",
-                 axis=false, ticks=false, c=cgrad([:dodgerblue3, :gray93, :orangered3]),
+                 axis=false, ticks=false, c=cgrad([:orangered3, :gray93, :orangered3]),
                  colorbar=false, clim=(-1, 1))
 
     # Seventh bin
@@ -193,7 +193,7 @@ function heatmap_dir(dir_val, nb_channels)
     str_val = @sprintf "%.2e" val
     p7 = heatmap(1:1, 1:nb_channels, reshape(dir_val.vectors[:, nb_channels - bin + 1], nb_channels, 1),
                  aspect_ratio=1, size=(200, 500), grid=false, xlabel=L"$\lambda = %$str_val$",
-                 axis=false, ticks=false, c=cgrad([:dodgerblue3, :gray93, :orangered3]),
+                 axis=false, ticks=false, c=cgrad([:orangered3, :gray93, :orangered3]),
                  colorbar=false, clim=(-1, 1))
 
     # Eigth bin
