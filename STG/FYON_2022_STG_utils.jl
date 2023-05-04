@@ -219,6 +219,204 @@ function heatmap_dir(dir_val, nb_channels)
     return CC
 end
 
+# This function plots main direction of any dimensionality reduction techniques
+# in a heatmap way
+function heatmap_dir4(dir_val, nb_channels)
+
+    total_var = sum(dir_val.values)
+    eig_val_decreasing = reverse(dir_val.values) ./ total_var
+    # Creating the first bin for the highest variance direction
+    bin = 1
+    val = eig_val_decreasing[1]*100
+    str_val = @sprintf "%d" val
+    p1 = heatmap(1:1, 1:nb_channels, reverse(reshape(abs.(dir_val.vectors[:, nb_channels - bin + 1]) ./ norm(dir_val.vectors[:, nb_channels - bin + 1]), nb_channels, 1)),
+                 aspect_ratio=1, size=(200, 500), grid=false, xlabel=L"$\mathrm{PC}1 (%$str_val\%)$",
+                 axis=false, ticks=false, c=cgrad([:gray93, :orangered3]),
+                 colorbar=false, clim=(0, 1), tickfontsize=15,
+                 yticks=(1:nb_channels, reverse([L"\bar{g}_\mathrm{Na}", L"\bar{g}_\mathrm{CaT}", L"\bar{g}_\mathrm{CaS}",
+                 L"\bar{g}_\mathrm{A}", L"\bar{g}_\mathrm{KCa}", L"\bar{g}_\mathrm{Kd}", L"\bar{g}_\mathrm{H}", L"g_\mathrm{leak}"])))
+
+    # Second bin
+    bin = bin + 1
+    val = eig_val_decreasing[2]*100
+    str_val = @sprintf "%d" val
+    p2 = heatmap(1:1, 1:nb_channels, reverse(reshape(abs.(dir_val.vectors[:, nb_channels - bin + 1]) ./ norm(dir_val.vectors[:, nb_channels - bin + 1]), nb_channels, 1)),
+                 aspect_ratio=1, size=(200, 500), grid=false, xlabel=L"$\mathrm{PC}2 (%$str_val\%)$",
+                 axis=false, ticks=false, c=cgrad([:gray93, :orangered3]),
+                 colorbar=false, clim=(0, 1))
+
+    # Third bin
+    bin = bin + 1
+    val = eig_val_decreasing[3]*100
+    str_val = @sprintf "%d" val
+    p3 = heatmap(1:1, 1:nb_channels, reverse(reshape(abs.(dir_val.vectors[:, nb_channels - bin + 1]) ./ norm(dir_val.vectors[:, nb_channels - bin + 1]), nb_channels, 1)),
+                 aspect_ratio=1, size=(200, 500), grid=false, xlabel=L"$\mathrm{PC}3 (%$str_val\%)$",
+                 axis=false, ticks=false, c=cgrad([:gray93, :orangered3]),
+                 colorbar=false, clim=(0, 1))
+
+    # Fourth bin
+    bin = bin + 1
+    val = eig_val_decreasing[4]*100
+    str_val = @sprintf "%d" val
+    p4 = heatmap(1:1, 1:nb_channels, reverse(reshape(abs.(dir_val.vectors[:, nb_channels - bin + 1]) ./ norm(dir_val.vectors[:, nb_channels - bin + 1]), nb_channels, 1)),
+                 aspect_ratio=1, size=(200, 500), grid=false, xlabel=L"$\mathrm{PC}4 (%$str_val\%)$",
+                 axis=false, ticks=false, c=cgrad([:gray93, :orangered3]),
+                 colorbar=false, clim=(0, 1))
+
+    # Creating the colorbar bin
+    colors =  -1. : 0.002 : 1.
+    p90 = heatmap(1:1, colors, reshape(colors, length(colors), 1), size=(200, 500),
+                 grid=false, axis=false, xticks=false, colorbar=false,
+                 c=cgrad([:gray93, :orangered3]), clim=(0, 1), ymirror=true,
+                 yticks=(0 : 0.2 : 1, [L"0\%", L"20\%", L"40\%", L"60\%", L"80\%", L"100\%"]), ylims=(0, 1), yaxis=true)
+
+    # Arranging everything
+    CC = plot(p1, p2, p3, p4, p90, layout=(1, 5),
+              size=(600, 500), margin=5Plots.mm)
+
+    return CC
+end
+
+# This function plots a scatter matrix for all dimensions of the STG model
+# with the two first main directions of the dimensionality reduction technique
+function scatter_matrix3x3(g_all, maxs, color_p, m_shape, names, flag, dir_val=Nothing, mean_vec=Nothing, s1=Nothing) # flag = 0 --> correlation, else PC1
+
+    cors = NaN * ones(3, 3)
+
+    p12 = scatter(g_all[:, 1], g_all[:, 2], label="", markerstrokewidth=0., color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    ylabel!(names[2])
+    xlims!((0, maxs[1]))
+    ylims!((0, maxs[2]))
+
+    if flag == 0
+        line_12 = fit(g_all[:, 1], g_all[:, 2], 1)
+        s0 = minimum(g_all[:, 1])
+        sn = maximum(g_all[:, 1])
+        plot!([s0, sn], [line_12(s0), line_12(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[1, 1] = cor(g_all[:, 1], g_all[:, 2])
+    else
+        plot!([mean_vec[1] - s1*dir_val.vectors[:, nb_channels][1]*dir_val.values, mean_vec[1] + s1*dir_val.vectors[:, nb_channels][1]*dir_val.values],
+              [mean_vec[2] - s1*dir_val.vectors[:, nb_channels][2]*dir_val.values, mean_vec[2] + s1*dir_val.vectors[:, nb_channels][2]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    end
+
+
+
+
+    p13 = scatter(g_all[:, 1], g_all[:, 3], label="", markerstrokewidth=0., color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    ylabel!(names[3])
+    xlims!((0, maxs[1]))
+    ylims!((0, maxs[3]))
+
+    if flag == 0
+        line_13 = fit(g_all[:, 1], g_all[:, 3], 1)
+        s0 = minimum(g_all[:, 1])
+        sn = maximum(g_all[:, 1])
+        plot!([s0, sn], [line_13(s0), line_13(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[2, 1] = cor(g_all[:, 1], g_all[:, 3])
+    else
+        plot!([mean_vec[1] - s1*dir_val.vectors[:, nb_channels][1]*dir_val.values, mean_vec[1] + s1*dir_val.vectors[:, nb_channels][1]*dir_val.values],
+              [mean_vec[3] - s1*dir_val.vectors[:, nb_channels][3]*dir_val.values, mean_vec[3] + s1*dir_val.vectors[:, nb_channels][3]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    end
+
+
+
+    p14 = scatter(g_all[:, 1], g_all[:, 4], label="", markerstrokewidth=0., color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    xlabel!(names[1])
+    ylabel!(names[4])
+    xlims!((0, maxs[1]))
+    ylims!((0, maxs[4]))
+
+    if flag == 0
+        line_14 = fit(g_all[:, 1], g_all[:, 4], 1)
+        s0 = minimum(g_all[:, 1])
+        sn = maximum(g_all[:, 1])
+        plot!([s0, sn], [line_14(s0), line_14(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[3, 1] = cor(g_all[:, 1], g_all[:, 4])
+    else
+        plot!([mean_vec[1] - s1*dir_val.vectors[:, nb_channels][1]*dir_val.values, mean_vec[1] + s1*dir_val.vectors[:, nb_channels][1]*dir_val.values],
+              [mean_vec[4] - s1*dir_val.vectors[:, nb_channels][4]*dir_val.values, mean_vec[4] + s1*dir_val.vectors[:, nb_channels][4]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    end
+
+
+
+    p23 = scatter(g_all[:, 2], g_all[:, 3], label="", markerstrokewidth=0., color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    xlims!((0, maxs[2]))
+    ylims!((0, maxs[3]))
+
+    if flag == 0
+        line_23 = fit(g_all[:, 2], g_all[:, 3], 1)
+        s0 = minimum(g_all[:, 2])
+        sn = maximum(g_all[:, 2])
+        plot!([s0, sn], [line_23(s0), line_23(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[2, 2] = cor(g_all[:, 2], g_all[:, 3])
+    else
+        plot!([mean_vec[2] - s1*dir_val.vectors[:, nb_channels][2]*dir_val.values, mean_vec[2] + s1*dir_val.vectors[:, nb_channels][2]*dir_val.values],
+              [mean_vec[3] - s1*dir_val.vectors[:, nb_channels][3]*dir_val.values, mean_vec[3] + s1*dir_val.vectors[:, nb_channels][3]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    end
+
+
+
+    p24 = scatter(g_all[:, 2], g_all[:, 4], label="", markerstrokewidth=0., color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    xlabel!(names[2])
+    xlims!((0, maxs[2]))
+    ylims!((0, maxs[4]))
+
+    if flag == 0
+        line_24 = fit(g_all[:, 2], g_all[:, 4], 1)
+        s0 = minimum(g_all[:, 2])
+        sn = maximum(g_all[:, 2])
+        plot!([s0, sn], [line_24(s0), line_24(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[3, 2] = cor(g_all[:, 2], g_all[:, 4])
+    else
+        plot!([mean_vec[2] - s1*dir_val.vectors[:, nb_channels][2]*dir_val.values, mean_vec[2] + s1*dir_val.vectors[:, nb_channels][2]*dir_val.values],
+              [mean_vec[4] - s1*dir_val.vectors[:, nb_channels][4]*dir_val.values, mean_vec[4] + s1*dir_val.vectors[:, nb_channels][4]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    end
+
+
+
+    p34 = scatter(g_all[:, 3], g_all[:, 4], label="", markerstrokewidth=0., color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    xlabel!(names[3])
+    xlims!((0, maxs[3]))
+    ylims!((0, maxs[4]))
+
+    if flag == 0
+        line_34 = fit(g_all[:, 3], g_all[:, 4], 1)
+        s0 = minimum(g_all[:, 3])
+        sn = maximum(g_all[:, 3])
+        plot!([s0, sn], [line_34(s0), line_34(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[3, 3] = cor(g_all[:, 3], g_all[:, 4])
+        display(cors)
+    else
+        plot!([mean_vec[3] - s1*dir_val.vectors[:, nb_channels][3]*dir_val.values, mean_vec[3] + s1*dir_val.vectors[:, nb_channels][3]*dir_val.values],
+              [mean_vec[4] - s1*dir_val.vectors[:, nb_channels][4]*dir_val.values, mean_vec[4] + s1*dir_val.vectors[:, nb_channels][4]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    end
+
+
+    CC = plot(p12, p13, p23, p14, p24, p34, size =(500, 500),
+              layout = @layout([° _ _; ° ° _; ° ° °]), margin=3Plots.mm)
+
+    return CC
+end
+
+
 # This function plots a scatter matrix for all dimensions of the STG model
 # with the two first main directions of the dimensionality reduction technique
 function scatter_matrix(dir_val, nb_channels, g_all, mean_vec, Na_max, CaT_max, CaS_max,
