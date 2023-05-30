@@ -132,89 +132,93 @@ end
 # This function plots main direction of any dimensionality reduction techniques
 # in a heatmap way
 function heatmap_dir(dir_val, nb_channels)
+
+    total_var = sum(dir_val.values)
+    eig_val_decreasing = reverse(dir_val.values) ./ total_var
     # Creating the first bin for the highest variance direction
     bin = 1
-    val = abs(dir_val.values[nb_channels - bin + 1])
-    str_val = @sprintf "%.2e" val
-    p1 = heatmap(1:1, 1:nb_channels, reshape(dir_val.vectors[:, nb_channels - bin + 1], nb_channels, 1),
-                 aspect_ratio=1, size=(200, 500), grid=false, xlabel=L"$\lambda = %$str_val$",
-                 axis=false, ticks=false, c=cgrad([:dodgerblue3, :gray93, :orangered3]),
-                 colorbar=false, clim=(-1, 1),
-                 yticks=(1:nb_channels, ["gNa", "gCaT", "gCaS", "gA", "gKCa", "gKd", "gH", "gleak"]))
+    val = eig_val_decreasing[1]*100
+    str_val = @sprintf "%d" val
+    p1 = heatmap(1:1, 1:nb_channels, reverse(reshape(abs.(dir_val.vectors[:, nb_channels - bin + 1]) ./ norm(dir_val.vectors[:, nb_channels - bin + 1]), nb_channels, 1)),
+                 grid=false, xlabel=L"%$str_val\%",
+                 axis=false, ticks=false, c=cgrad([:gray93, :orangered3]),
+                 colorbar=false, clim=(0, 1), tickfontsize=18, guidefontsize=15,
+                 yticks=(1:nb_channels, reverse([L"\bar{g}_\mathrm{Na}", L"\bar{g}_\mathrm{CaT}", L"\bar{g}_\mathrm{CaS}",
+                 L"\bar{g}_\mathrm{A}", L"\bar{g}_\mathrm{KCa}", L"\bar{g}_\mathrm{Kd}", L"\bar{g}_\mathrm{H}", L"g_\mathrm{leak}"])))
 
     # Second bin
     bin = bin + 1
-    val = abs(dir_val.values[nb_channels - bin + 1])
-    str_val = @sprintf "%.2e" val
-    p2 = heatmap(1:1, 1:nb_channels, reshape(dir_val.vectors[:, nb_channels - bin + 1], nb_channels, 1),
-                 aspect_ratio=1, size=(200, 500), grid=false, xlabel=L"$\lambda = %$str_val$",
-                 axis=false, ticks=false, c=cgrad([:dodgerblue3, :gray93, :orangered3]),
-                 colorbar=false, clim=(-1, 1))
+    val = eig_val_decreasing[2]*100
+    str_val = @sprintf "%d" val
+    p2 = heatmap(1:1, 1:nb_channels, reverse(reshape(abs.(dir_val.vectors[:, nb_channels - bin + 1]) ./ norm(dir_val.vectors[:, nb_channels - bin + 1]), nb_channels, 1)),
+                 grid=false, xlabel=L"%$str_val\%",
+                 axis=false, ticks=false, c=cgrad([:gray93, :orangered3]), guidefontsize=15,
+                 colorbar=false, clim=(0, 1))
 
     # Third bin
     bin = bin + 1
-    val = abs(dir_val.values[nb_channels - bin + 1])
-    str_val = @sprintf "%.2e" val
-    p3 = heatmap(1:1, 1:nb_channels, reshape(dir_val.vectors[:, nb_channels - bin + 1], nb_channels, 1),
-                 aspect_ratio=1, size=(200, 500), grid=false, xlabel=L"$\lambda = %$str_val$",
-                 axis=false, ticks=false, c=cgrad([:dodgerblue3, :gray93, :orangered3]),
-                 colorbar=false, clim=(-1, 1))
+    val = eig_val_decreasing[3]*100
+    str_val = @sprintf "%d" val
+    p3 = heatmap(1:1, 1:nb_channels, reverse(reshape(abs.(dir_val.vectors[:, nb_channels - bin + 1]) ./ norm(dir_val.vectors[:, nb_channels - bin + 1]), nb_channels, 1)),
+                 grid=false, xlabel=L"%$str_val\%",
+                 axis=false, ticks=false, c=cgrad([:gray93, :orangered3]), guidefontsize=15,
+                 colorbar=false, clim=(0, 1))
 
     # Fourth bin
     bin = bin + 1
-    val = abs(dir_val.values[nb_channels - bin + 1])
-    str_val = @sprintf "%.2e" val
-    p4 = heatmap(1:1, 1:nb_channels, reshape(dir_val.vectors[:, nb_channels - bin + 1], nb_channels, 1),
-                 aspect_ratio=1, size=(200, 500), grid=false, xlabel=L"$\lambda = %$str_val$",
-                 axis=false, ticks=false, c=cgrad([:dodgerblue3, :gray93, :orangered3]),
-                 colorbar=false, clim=(-1, 1))
+    val = eig_val_decreasing[4]*100
+    str_val = @sprintf "%d" val
+    p4 = heatmap(1:1, 1:nb_channels, reverse(reshape(abs.(dir_val.vectors[:, nb_channels - bin + 1]) ./ norm(dir_val.vectors[:, nb_channels - bin + 1]), nb_channels, 1)),
+                 grid=false, xlabel=L"%$str_val\%",
+                 axis=false, ticks=false, c=cgrad([:gray93, :orangered3]), guidefontsize=15,
+                 colorbar=false, clim=(0, 1))
 
     # Fifth bin
     bin = bin + 1
-    val = abs(dir_val.values[nb_channels - bin + 1])
-    str_val = @sprintf "%.2e" val
-    p5 = heatmap(1:1, 1:nb_channels, reshape(dir_val.vectors[:, nb_channels - bin + 1], nb_channels, 1),
-                 aspect_ratio=1, size=(200, 500), grid=false, xlabel=L"$\lambda = %$str_val$",
-                 axis=false, ticks=false, c=cgrad([:dodgerblue3, :gray93, :orangered3]),
-                 colorbar=false, clim=(-1, 1))
+    val = eig_val_decreasing[5]*100
+    str_val = @sprintf "%d" val
+    p5 = heatmap(1:1, 1:nb_channels, reverse(reshape(abs.(dir_val.vectors[:, nb_channels - bin + 1]) ./ norm(dir_val.vectors[:, nb_channels - bin + 1]), nb_channels, 1)),
+                 grid=false, xlabel=L"%$str_val\%",
+                 axis=false, ticks=false, c=cgrad([:gray93, :orangered3]), guidefontsize=15,
+                 colorbar=false, clim=(0, 1))
 
     # Sixth bin
     bin = bin + 1
-    val = abs(dir_val.values[nb_channels - bin + 1])
-    str_val = @sprintf "%.2e" val
-    p6 = heatmap(1:1, 1:nb_channels, reshape(dir_val.vectors[:, nb_channels - bin + 1], nb_channels, 1),
-                 aspect_ratio=1, size=(200, 500), grid=false, xlabel=L"$\lambda = %$str_val$",
-                 axis=false, ticks=false, c=cgrad([:dodgerblue3, :gray93, :orangered3]),
-                 colorbar=false, clim=(-1, 1))
+    val = eig_val_decreasing[6]*100
+    str_val = @sprintf "%d" val
+    p6 = heatmap(1:1, 1:nb_channels, reverse(reshape(abs.(dir_val.vectors[:, nb_channels - bin + 1]) ./ norm(dir_val.vectors[:, nb_channels - bin + 1]), nb_channels, 1)),
+                 grid=false, xlabel=L"%$str_val\%",
+                 axis=false, ticks=false, c=cgrad([:gray93, :orangered3]), guidefontsize=15,
+                 colorbar=false, clim=(0, 1))
 
     # Seventh bin
     bin = bin + 1
-    val = abs(dir_val.values[nb_channels - bin + 1])
-    str_val = @sprintf "%.2e" val
-    p7 = heatmap(1:1, 1:nb_channels, reshape(dir_val.vectors[:, nb_channels - bin + 1], nb_channels, 1),
-                 aspect_ratio=1, size=(200, 500), grid=false, xlabel=L"$\lambda = %$str_val$",
-                 axis=false, ticks=false, c=cgrad([:dodgerblue3, :gray93, :orangered3]),
-                 colorbar=false, clim=(-1, 1))
+    val = eig_val_decreasing[7]*100
+    str_val = @sprintf "%d" val
+    p7 = heatmap(1:1, 1:nb_channels, reverse(reshape(abs.(dir_val.vectors[:, nb_channels - bin + 1]) ./ norm(dir_val.vectors[:, nb_channels - bin + 1]), nb_channels, 1)),
+                 grid=false, xlabel=L"%$str_val\%",
+                 axis=false, ticks=false, c=cgrad([:gray93, :orangered3]), guidefontsize=15,
+                 colorbar=false, clim=(0, 1))
 
     # Eigth bin
     bin = bin + 1
-    val = abs(dir_val.values[nb_channels - bin + 1])
-    str_val = @sprintf "%.2e" val
-    p8 = heatmap(1:1, 1:nb_channels, reshape(dir_val.vectors[:, nb_channels - bin + 1], nb_channels, 1),
-                 aspect_ratio=1, size=(200, 500), grid=false, xlabel=L"$\lambda = %$str_val$",
-                 axis=false, ticks=false, c=cgrad([:dodgerblue3, :gray93, :orangered3]),
-                 colorbar=false, clim=(-1, 1))
+    val = eig_val_decreasing[8]*100
+    str_val = @sprintf "%d" val
+    p8 = heatmap(1:1, 1:nb_channels, reverse(reshape(abs.(dir_val.vectors[:, nb_channels - bin + 1]) ./ norm(dir_val.vectors[:, nb_channels - bin + 1]), nb_channels, 1)),
+                 grid=false, xlabel=L"%$str_val\%", right_margin=5Plots.mm,
+                 axis=false, ticks=false, c=cgrad([:gray93, :orangered3]), guidefontsize=15,
+                 colorbar=false, clim=(0, 1))
 
     # Creating the colorbar bin
     colors =  -1. : 0.002 : 1.
     p90 = heatmap(1:1, colors, reshape(colors, length(colors), 1), size=(200, 500),
                  grid=false, axis=false, xticks=false, colorbar=false,
-                 c=cgrad([:dodgerblue3, :gray93, :orangered3]), clim=(-1, 1), ymirror=true,
-                 yticks=(-1. : 0.2 : 1.), ylims=(-1, 1), yaxis=true)
+                 c=cgrad([:gray93, :orangered3]), clim=(0, 1), ymirror=true,
+                 yticks=(0 : 0.2 : 1, [L"0\%", L"20\%", L"40\%", L"60\%", L"80\%", L"100\%"]), ylims=(0, 1), yaxis=true)
 
     # Arranging everything
-    CC = plot(p1, p2, p3, p4, p5, p6, p7, p8, p90, layout=(1, nb_channels + 1),
-              size=(1200, 500), margin=5Plots.mm)
+    CC = plot(p1, p2, p3, p4, p5, p6, p7, p8, layout=(1, nb_channels),
+              size=(600, 500))
 
     return CC
 end
@@ -230,9 +234,9 @@ function heatmap_dir4(dir_val, nb_channels)
     val = eig_val_decreasing[1]*100
     str_val = @sprintf "%d" val
     p1 = heatmap(1:1, 1:nb_channels, reverse(reshape(abs.(dir_val.vectors[:, nb_channels - bin + 1]) ./ norm(dir_val.vectors[:, nb_channels - bin + 1]), nb_channels, 1)),
-                 aspect_ratio=1, size=(200, 500), grid=false, xlabel=L"$\mathrm{PC}1 (%$str_val\%)$",
+                 grid=false, xlabel=L"$\mathrm{PC}1 (%$str_val\%)$",
                  axis=false, ticks=false, c=cgrad([:gray93, :orangered3]),
-                 colorbar=false, clim=(0, 1), tickfontsize=15,
+                 colorbar=false, clim=(0, 1), tickfontsize=18, guidefontsize=15,
                  yticks=(1:nb_channels, reverse([L"\bar{g}_\mathrm{Na}", L"\bar{g}_\mathrm{CaT}", L"\bar{g}_\mathrm{CaS}",
                  L"\bar{g}_\mathrm{A}", L"\bar{g}_\mathrm{KCa}", L"\bar{g}_\mathrm{Kd}", L"\bar{g}_\mathrm{H}", L"g_\mathrm{leak}"])))
 
@@ -241,8 +245,8 @@ function heatmap_dir4(dir_val, nb_channels)
     val = eig_val_decreasing[2]*100
     str_val = @sprintf "%d" val
     p2 = heatmap(1:1, 1:nb_channels, reverse(reshape(abs.(dir_val.vectors[:, nb_channels - bin + 1]) ./ norm(dir_val.vectors[:, nb_channels - bin + 1]), nb_channels, 1)),
-                 aspect_ratio=1, size=(200, 500), grid=false, xlabel=L"$\mathrm{PC}2 (%$str_val\%)$",
-                 axis=false, ticks=false, c=cgrad([:gray93, :orangered3]),
+                 grid=false, xlabel=L"$\mathrm{PC}2 (%$str_val\%)$",
+                 axis=false, ticks=false, c=cgrad([:gray93, :orangered3]), guidefontsize=15,
                  colorbar=false, clim=(0, 1))
 
     # Third bin
@@ -250,8 +254,8 @@ function heatmap_dir4(dir_val, nb_channels)
     val = eig_val_decreasing[3]*100
     str_val = @sprintf "%d" val
     p3 = heatmap(1:1, 1:nb_channels, reverse(reshape(abs.(dir_val.vectors[:, nb_channels - bin + 1]) ./ norm(dir_val.vectors[:, nb_channels - bin + 1]), nb_channels, 1)),
-                 aspect_ratio=1, size=(200, 500), grid=false, xlabel=L"$\mathrm{PC}3 (%$str_val\%)$",
-                 axis=false, ticks=false, c=cgrad([:gray93, :orangered3]),
+                 grid=false, xlabel=L"$\mathrm{PC}3 (%$str_val\%)$",
+                 axis=false, ticks=false, c=cgrad([:gray93, :orangered3]), guidefontsize=15,
                  colorbar=false, clim=(0, 1))
 
     # Fourth bin
@@ -259,8 +263,8 @@ function heatmap_dir4(dir_val, nb_channels)
     val = eig_val_decreasing[4]*100
     str_val = @sprintf "%d" val
     p4 = heatmap(1:1, 1:nb_channels, reverse(reshape(abs.(dir_val.vectors[:, nb_channels - bin + 1]) ./ norm(dir_val.vectors[:, nb_channels - bin + 1]), nb_channels, 1)),
-                 aspect_ratio=1, size=(200, 500), grid=false, xlabel=L"$\mathrm{PC}4 (%$str_val\%)$",
-                 axis=false, ticks=false, c=cgrad([:gray93, :orangered3]),
+                 grid=false, xlabel=L"$\mathrm{PC}4 (%$str_val\%)$",
+                 axis=false, ticks=false, c=cgrad([:gray93, :orangered3]), guidefontsize=15,
                  colorbar=false, clim=(0, 1))
 
     # Creating the colorbar bin
@@ -271,7 +275,7 @@ function heatmap_dir4(dir_val, nb_channels)
                  yticks=(0 : 0.2 : 1, [L"0\%", L"20\%", L"40\%", L"60\%", L"80\%", L"100\%"]), ylims=(0, 1), yaxis=true)
 
     # Arranging everything
-    CC = plot(p1, p2, p3, p4, p90, layout=(1, 5),
+    CC = plot(p1, p2, p3, p4, layout=(1, 4),
               size=(600, 500), margin=5Plots.mm)
 
     return CC
@@ -279,13 +283,18 @@ end
 
 # This function plots a scatter matrix for all dimensions of the STG model
 # with the two first main directions of the dimensionality reduction technique
-function scatter_matrix3x3(g_all, maxs, color_p, m_shape, names, flag, dir_val=Nothing, mean_vec=Nothing, s1=Nothing) # flag = 0 --> correlation, else PC1
+function scatter_matrix3x3(g_all, maxs, color_p, m_shape, names; flag=0, dir_val=Nothing, mean_vec=Nothing, s1=Nothing, flag2=0, g_all2=Nothing, m_shape2=Nothing, s2=Nothing) # flag = 0 --> correlation, elseif 1 PC1 #flag2 = 1 -> 2 g_all
 
     cors = NaN * ones(3, 3)
 
-    p12 = scatter(g_all[:, 1], g_all[:, 2], label="", markerstrokewidth=0., color=color_p,
+    p12 = scatter(g_all[:, 1], g_all[:, 2], label="", markerstrokewidth=0., color=color_p, top_margin=12Plots.mm,
                   grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
-    ylabel!(names[2])
+    if flag2 == 1
+        scatter!(g_all2[:, 1], g_all2[:, 2], label="", color=color_p,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
+    annotate!(maxs[1]/2, maxs[2]*1.3, Plots.text(names[1], :black, :center, 18))
+
     xlims!((0, maxs[1]))
     ylims!((0, maxs[2]))
 
@@ -296,10 +305,17 @@ function scatter_matrix3x3(g_all, maxs, color_p, m_shape, names, flag, dir_val=N
         plot!([s0, sn], [line_12(s0), line_12(sn)], linewidth=2, label="", linecolor="black")
 
         cors[1, 1] = cor(g_all[:, 1], g_all[:, 2])
-    else
+    elseif flag == 1
         plot!([mean_vec[1] - s1*dir_val.vectors[:, nb_channels][1]*dir_val.values, mean_vec[1] + s1*dir_val.vectors[:, nb_channels][1]*dir_val.values],
               [mean_vec[2] - s1*dir_val.vectors[:, nb_channels][2]*dir_val.values, mean_vec[2] + s1*dir_val.vectors[:, nb_channels][2]*dir_val.values],
               arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[1] - s1*dir_val.vectors[:, nb_channels][1]*dir_val.values, mean_vec[1] + s1*dir_val.vectors[:, nb_channels][1]*dir_val.values],
+              [mean_vec[2] - s1*dir_val.vectors[:, nb_channels][2]*dir_val.values, mean_vec[2] + s1*dir_val.vectors[:, nb_channels][2]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[1] - s2*dir_val.vectors[:, nb_channels-1][1]*dir_val.values, mean_vec[1] + s2*dir_val.vectors[:, nb_channels-1][1]*dir_val.values],
+              [mean_vec[2] - s2*dir_val.vectors[:, nb_channels-1][2]*dir_val.values, mean_vec[2] + s2*dir_val.vectors[:, nb_channels-1][2]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
     end
 
 
@@ -307,7 +323,10 @@ function scatter_matrix3x3(g_all, maxs, color_p, m_shape, names, flag, dir_val=N
 
     p13 = scatter(g_all[:, 1], g_all[:, 3], label="", markerstrokewidth=0., color=color_p,
                   grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
-    ylabel!(names[3])
+    if flag2 == 1
+        scatter!(g_all2[:, 1], g_all2[:, 3], label="", color=color_p,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
     xlims!((0, maxs[1]))
     ylims!((0, maxs[3]))
 
@@ -318,18 +337,27 @@ function scatter_matrix3x3(g_all, maxs, color_p, m_shape, names, flag, dir_val=N
         plot!([s0, sn], [line_13(s0), line_13(sn)], linewidth=2, label="", linecolor="black")
 
         cors[2, 1] = cor(g_all[:, 1], g_all[:, 3])
-    else
+    elseif flag == 1
         plot!([mean_vec[1] - s1*dir_val.vectors[:, nb_channels][1]*dir_val.values, mean_vec[1] + s1*dir_val.vectors[:, nb_channels][1]*dir_val.values],
               [mean_vec[3] - s1*dir_val.vectors[:, nb_channels][3]*dir_val.values, mean_vec[3] + s1*dir_val.vectors[:, nb_channels][3]*dir_val.values],
               arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[1] - s1*dir_val.vectors[:, nb_channels][1]*dir_val.values, mean_vec[1] + s1*dir_val.vectors[:, nb_channels][1]*dir_val.values],
+              [mean_vec[3] - s1*dir_val.vectors[:, nb_channels][3]*dir_val.values, mean_vec[3] + s1*dir_val.vectors[:, nb_channels][3]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[1] - s2*dir_val.vectors[:, nb_channels-1][1]*dir_val.values, mean_vec[1] + s2*dir_val.vectors[:, nb_channels-1][1]*dir_val.values],
+              [mean_vec[3] - s2*dir_val.vectors[:, nb_channels-1][3]*dir_val.values, mean_vec[3] + s2*dir_val.vectors[:, nb_channels-1][3]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
     end
 
 
 
     p14 = scatter(g_all[:, 1], g_all[:, 4], label="", markerstrokewidth=0., color=color_p,
                   grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
-    xlabel!(names[1])
-    ylabel!(names[4])
+    if flag2 == 1
+        scatter!(g_all2[:, 1], g_all2[:, 4], label="", color=color_p,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
     xlims!((0, maxs[1]))
     ylims!((0, maxs[4]))
 
@@ -340,16 +368,27 @@ function scatter_matrix3x3(g_all, maxs, color_p, m_shape, names, flag, dir_val=N
         plot!([s0, sn], [line_14(s0), line_14(sn)], linewidth=2, label="", linecolor="black")
 
         cors[3, 1] = cor(g_all[:, 1], g_all[:, 4])
-    else
+    elseif flag == 1
         plot!([mean_vec[1] - s1*dir_val.vectors[:, nb_channels][1]*dir_val.values, mean_vec[1] + s1*dir_val.vectors[:, nb_channels][1]*dir_val.values],
               [mean_vec[4] - s1*dir_val.vectors[:, nb_channels][4]*dir_val.values, mean_vec[4] + s1*dir_val.vectors[:, nb_channels][4]*dir_val.values],
               arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[1] - s1*dir_val.vectors[:, nb_channels][1]*dir_val.values, mean_vec[1] + s1*dir_val.vectors[:, nb_channels][1]*dir_val.values],
+              [mean_vec[4] - s1*dir_val.vectors[:, nb_channels][4]*dir_val.values, mean_vec[4] + s1*dir_val.vectors[:, nb_channels][4]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[1] - s2*dir_val.vectors[:, nb_channels-1][1]*dir_val.values, mean_vec[1] + s2*dir_val.vectors[:, nb_channels-1][1]*dir_val.values],
+              [mean_vec[4] - s2*dir_val.vectors[:, nb_channels-1][4]*dir_val.values, mean_vec[4] + s2*dir_val.vectors[:, nb_channels-1][4]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
     end
 
 
 
     p23 = scatter(g_all[:, 2], g_all[:, 3], label="", markerstrokewidth=0., color=color_p,
                   grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    if flag2 == 1
+        scatter!(g_all2[:, 2], g_all2[:, 3], label="", color=color_p,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
     xlims!((0, maxs[2]))
     ylims!((0, maxs[3]))
 
@@ -360,17 +399,27 @@ function scatter_matrix3x3(g_all, maxs, color_p, m_shape, names, flag, dir_val=N
         plot!([s0, sn], [line_23(s0), line_23(sn)], linewidth=2, label="", linecolor="black")
 
         cors[2, 2] = cor(g_all[:, 2], g_all[:, 3])
-    else
+    elseif flag == 1
         plot!([mean_vec[2] - s1*dir_val.vectors[:, nb_channels][2]*dir_val.values, mean_vec[2] + s1*dir_val.vectors[:, nb_channels][2]*dir_val.values],
               [mean_vec[3] - s1*dir_val.vectors[:, nb_channels][3]*dir_val.values, mean_vec[3] + s1*dir_val.vectors[:, nb_channels][3]*dir_val.values],
               arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[2] - s1*dir_val.vectors[:, nb_channels][2]*dir_val.values, mean_vec[2] + s1*dir_val.vectors[:, nb_channels][2]*dir_val.values],
+              [mean_vec[3] - s1*dir_val.vectors[:, nb_channels][3]*dir_val.values, mean_vec[3] + s1*dir_val.vectors[:, nb_channels][3]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[2] - s2*dir_val.vectors[:, nb_channels-1][2]*dir_val.values, mean_vec[2] + s2*dir_val.vectors[:, nb_channels-1][2]*dir_val.values],
+              [mean_vec[3] - s2*dir_val.vectors[:, nb_channels-1][3]*dir_val.values, mean_vec[3] + s2*dir_val.vectors[:, nb_channels-1][3]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
     end
 
 
 
     p24 = scatter(g_all[:, 2], g_all[:, 4], label="", markerstrokewidth=0., color=color_p,
                   grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
-    xlabel!(names[2])
+    if flag2 == 1
+        scatter!(g_all2[:, 2], g_all2[:, 4], label="", color=color_p,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
     xlims!((0, maxs[2]))
     ylims!((0, maxs[4]))
 
@@ -381,17 +430,28 @@ function scatter_matrix3x3(g_all, maxs, color_p, m_shape, names, flag, dir_val=N
         plot!([s0, sn], [line_24(s0), line_24(sn)], linewidth=2, label="", linecolor="black")
 
         cors[3, 2] = cor(g_all[:, 2], g_all[:, 4])
-    else
+    elseif flag == 1
         plot!([mean_vec[2] - s1*dir_val.vectors[:, nb_channels][2]*dir_val.values, mean_vec[2] + s1*dir_val.vectors[:, nb_channels][2]*dir_val.values],
               [mean_vec[4] - s1*dir_val.vectors[:, nb_channels][4]*dir_val.values, mean_vec[4] + s1*dir_val.vectors[:, nb_channels][4]*dir_val.values],
               arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[2] - s1*dir_val.vectors[:, nb_channels][2]*dir_val.values, mean_vec[2] + s1*dir_val.vectors[:, nb_channels][2]*dir_val.values],
+              [mean_vec[4] - s1*dir_val.vectors[:, nb_channels][4]*dir_val.values, mean_vec[4] + s1*dir_val.vectors[:, nb_channels][4]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[2] - s2*dir_val.vectors[:, nb_channels-1][2]*dir_val.values, mean_vec[2] + s2*dir_val.vectors[:, nb_channels-1][2]*dir_val.values],
+              [mean_vec[4] - s2*dir_val.vectors[:, nb_channels-1][4]*dir_val.values, mean_vec[4] + s2*dir_val.vectors[:, nb_channels-1][4]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
     end
 
 
 
-    p34 = scatter(g_all[:, 3], g_all[:, 4], label="", markerstrokewidth=0., color=color_p,
+    p34 = scatter(g_all[:, 3], g_all[:, 4], label="", markerstrokewidth=0., color=color_p, right_margin=15Plots.mm,
                   grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
-    xlabel!(names[3])
+    if flag2 == 1
+        scatter!(g_all2[:, 3], g_all2[:, 4], label="", color=color_p,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
+    annotate!(maxs[3]*1.3, maxs[4]/2, Plots.text(names[4], :black, :center, 18))
     xlims!((0, maxs[3]))
     ylims!((0, maxs[4]))
 
@@ -403,15 +463,34 @@ function scatter_matrix3x3(g_all, maxs, color_p, m_shape, names, flag, dir_val=N
 
         cors[3, 3] = cor(g_all[:, 3], g_all[:, 4])
         display(cors)
-    else
+    elseif flag == 1
         plot!([mean_vec[3] - s1*dir_val.vectors[:, nb_channels][3]*dir_val.values, mean_vec[3] + s1*dir_val.vectors[:, nb_channels][3]*dir_val.values],
               [mean_vec[4] - s1*dir_val.vectors[:, nb_channels][4]*dir_val.values, mean_vec[4] + s1*dir_val.vectors[:, nb_channels][4]*dir_val.values],
               arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[3] - s1*dir_val.vectors[:, nb_channels][3]*dir_val.values, mean_vec[3] + s1*dir_val.vectors[:, nb_channels][3]*dir_val.values],
+              [mean_vec[4] - s1*dir_val.vectors[:, nb_channels][4]*dir_val.values, mean_vec[4] + s1*dir_val.vectors[:, nb_channels][4]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[3] - s2*dir_val.vectors[:, nb_channels-1][3]*dir_val.values, mean_vec[3] + s2*dir_val.vectors[:, nb_channels-1][3]*dir_val.values],
+              [mean_vec[4] - s2*dir_val.vectors[:, nb_channels-1][4]*dir_val.values, mean_vec[4] + s2*dir_val.vectors[:, nb_channels-1][4]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
     end
 
+    p21 = plot(axis=false, ticks=false, labels=false)
+    xlims!((-1, 1))
+    ylims!((-1, 1))
+    annotate!(0, 0, Plots.text(names[2], :black, :center, 18))
 
-    CC = plot(p12, p13, p23, p14, p24, p34, size =(500, 500),
-              layout = @layout([° _ _; ° ° _; ° ° °]), margin=3Plots.mm)
+    p32 = plot(axis=false, ticks=false, labels=false)
+    xlims!((-1, 1))
+    ylims!((-1, 1))
+    annotate!(0, 0, Plots.text(names[3], :black, :center, 18))
+
+
+
+
+    CC = plot(p12, p21, p13, p23, p32, p14, p24, p34, size =(500, 500),
+              layout = @layout([° ° _; ° ° °; ° ° °]), margin=3Plots.mm)
 
     return CC
 end
