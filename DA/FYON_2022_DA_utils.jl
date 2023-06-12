@@ -269,10 +269,16 @@ function scatter_matrix3x3(g_all, maxs, color_p, m_shape, names; flag=0, dir_val
 
     cors = NaN * ones(3, 3)
 
-    p12 = scatter(g_all[:, 1], g_all[:, 2], label="", markerstrokewidth=0., color=color_p, top_margin=12Plots.mm,
+    if m_shape == :cross
+        msw_main = 1
+    else
+        msw_main = 0
+    end
+
+    p12 = scatter(g_all[:, 1], g_all[:, 2], label="", markerstrokewidth=msw_main, color=color_p, top_margin=12Plots.mm,
                   grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
     if flag2 == 1
-        scatter!(g_all2[:, 1], g_all2[:, 2], label="", color=color_p,
+        scatter!(g_all2[:, 1], g_all2[:, 2], label="", color=color_p, markerstrokewidth=0.,
                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
     end
     annotate!(maxs[1]/2, maxs[2]*1.3, Plots.text(names[1], :black, :center, 18))
@@ -303,10 +309,10 @@ function scatter_matrix3x3(g_all, maxs, color_p, m_shape, names; flag=0, dir_val
 
 
 
-    p13 = scatter(g_all[:, 1], g_all[:, 3], label="", markerstrokewidth=0., color=color_p,
+    p13 = scatter(g_all[:, 1], g_all[:, 3], label="", markerstrokewidth=msw_main, color=color_p,
                   grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
     if flag2 == 1
-        scatter!(g_all2[:, 1], g_all2[:, 3], label="", color=color_p,
+        scatter!(g_all2[:, 1], g_all2[:, 3], label="", color=color_p, markerstrokewidth=0.,
                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
     end
     xlims!((0, maxs[1]))
@@ -334,10 +340,10 @@ function scatter_matrix3x3(g_all, maxs, color_p, m_shape, names; flag=0, dir_val
 
 
 
-    p14 = scatter(g_all[:, 1], g_all[:, 4], label="", markerstrokewidth=0., color=color_p,
+    p14 = scatter(g_all[:, 1], g_all[:, 4], label="", markerstrokewidth=msw_main, color=color_p,
                   grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
     if flag2 == 1
-        scatter!(g_all2[:, 1], g_all2[:, 4], label="", color=color_p,
+        scatter!(g_all2[:, 1], g_all2[:, 4], label="", color=color_p, markerstrokewidth=0.,
                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
     end
     xlims!((0, maxs[1]))
@@ -365,10 +371,10 @@ function scatter_matrix3x3(g_all, maxs, color_p, m_shape, names; flag=0, dir_val
 
 
 
-    p23 = scatter(g_all[:, 2], g_all[:, 3], label="", markerstrokewidth=0., color=color_p,
+    p23 = scatter(g_all[:, 2], g_all[:, 3], label="", markerstrokewidth=msw_main, color=color_p,
                   grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
     if flag2 == 1
-        scatter!(g_all2[:, 2], g_all2[:, 3], label="", color=color_p,
+        scatter!(g_all2[:, 2], g_all2[:, 3], label="", color=color_p, markerstrokewidth=0.,
                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
     end
     xlims!((0, maxs[2]))
@@ -396,10 +402,10 @@ function scatter_matrix3x3(g_all, maxs, color_p, m_shape, names; flag=0, dir_val
 
 
 
-    p24 = scatter(g_all[:, 2], g_all[:, 4], label="", markerstrokewidth=0., color=color_p,
+    p24 = scatter(g_all[:, 2], g_all[:, 4], label="", markerstrokewidth=msw_main, color=color_p,
                   grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
     if flag2 == 1
-        scatter!(g_all2[:, 2], g_all2[:, 4], label="", color=color_p,
+        scatter!(g_all2[:, 2], g_all2[:, 4], label="", color=color_p, markerstrokewidth=0.,
                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
     end
     xlims!((0, maxs[2]))
@@ -427,10 +433,10 @@ function scatter_matrix3x3(g_all, maxs, color_p, m_shape, names; flag=0, dir_val
 
 
 
-    p34 = scatter(g_all[:, 3], g_all[:, 4], label="", markerstrokewidth=0., color=color_p, right_margin=15Plots.mm,
+    p34 = scatter(g_all[:, 3], g_all[:, 4], label="", markerstrokewidth=msw_main, color=color_p, right_margin=15Plots.mm,
                   grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
     if flag2 == 1
-        scatter!(g_all2[:, 3], g_all2[:, 4], label="", color=color_p,
+        scatter!(g_all2[:, 3], g_all2[:, 4], label="", color=color_p, markerstrokewidth=0.,
                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
     end
     annotate!(maxs[3]*1.3, maxs[4]/2, Plots.text(names[4], :black, :center, 18))
