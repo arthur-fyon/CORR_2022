@@ -501,11 +501,935 @@ function scatter_matrix3x3(g_all, maxs, color_p, m_shape, names; flag=0, dir_val
     return CC
 end
 
+# This function plots a scatter matrix for all dimensions of the STG model
+# with the two first main directions of the dimensionality reduction technique
+function scatter_matrix(g_all, maxs, color_p, m_shape, names; flag=0, dir_val=Nothing, mean_vec=Nothing, s1=Nothing, flag2=0, g_all2=Nothing, m_shape2=Nothing, s2=Nothing) # flag = 0 --> correlation, elseif 1 PC1 #flag2 = 1 -> 2 g_all)
+    cors = NaN * ones(nb_channels-1, nb_channels-1)
+
+    if m_shape == :cross
+        msw_main = 1
+    else
+        msw_main = 0
+    end
+
+    p12 = scatter(g_all[:, 1], g_all[:, 2], label="", markerstrokewidth=msw_main, color=color_p, top_margin=12Plots.mm,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    if flag2 == 1
+        scatter!(g_all2[:, 1], g_all2[:, 2], label="", color=color_p, markerstrokewidth=0.,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
+    annotate!(maxs[1]/2, maxs[2]*1.3, Plots.text(names[1], :black, :center, 18))
+
+    xlims!((0, maxs[1]))
+    ylims!((0, maxs[2]))
+
+    if flag == 0
+        line_12 = fit(g_all[:, 1], g_all[:, 2], 1)
+        s0 = minimum(g_all[:, 1])
+        sn = maximum(g_all[:, 1])
+        plot!([s0, sn], [line_12(s0), line_12(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[1, 1] = cor(g_all[:, 1], g_all[:, 2])
+    elseif flag == 1
+        plot!([mean_vec[1] - s1*dir_val.vectors[:, nb_channels][1]*dir_val.values, mean_vec[1] + s1*dir_val.vectors[:, nb_channels][1]*dir_val.values],
+              [mean_vec[2] - s1*dir_val.vectors[:, nb_channels][2]*dir_val.values, mean_vec[2] + s1*dir_val.vectors[:, nb_channels][2]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[1] - s1*dir_val.vectors[:, nb_channels][1]*dir_val.values, mean_vec[1] + s1*dir_val.vectors[:, nb_channels][1]*dir_val.values],
+              [mean_vec[2] - s1*dir_val.vectors[:, nb_channels][2]*dir_val.values, mean_vec[2] + s1*dir_val.vectors[:, nb_channels][2]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[1] - s2*dir_val.vectors[:, nb_channels-1][1]*dir_val.values, mean_vec[1] + s2*dir_val.vectors[:, nb_channels-1][1]*dir_val.values],
+              [mean_vec[2] - s2*dir_val.vectors[:, nb_channels-1][2]*dir_val.values, mean_vec[2] + s2*dir_val.vectors[:, nb_channels-1][2]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
+    end
+
+
+
+    p13 = scatter(g_all[:, 1], g_all[:, 3], label="", markerstrokewidth=msw_main, color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    if flag2 == 1
+        scatter!(g_all2[:, 1], g_all2[:, 3], label="", color=color_p, markerstrokewidth=0.,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
+    xlims!((0, maxs[1]))
+    ylims!((0, maxs[3]))
+
+    if flag == 0
+        line_13 = fit(g_all[:, 1], g_all[:, 3], 1)
+        s0 = minimum(g_all[:, 1])
+        sn = maximum(g_all[:, 1])
+        plot!([s0, sn], [line_13(s0), line_13(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[2, 1] = cor(g_all[:, 1], g_all[:, 3])
+    elseif flag == 1
+        plot!([mean_vec[1] - s1*dir_val.vectors[:, nb_channels][1]*dir_val.values, mean_vec[1] + s1*dir_val.vectors[:, nb_channels][1]*dir_val.values],
+              [mean_vec[3] - s1*dir_val.vectors[:, nb_channels][3]*dir_val.values, mean_vec[3] + s1*dir_val.vectors[:, nb_channels][3]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[1] - s1*dir_val.vectors[:, nb_channels][1]*dir_val.values, mean_vec[1] + s1*dir_val.vectors[:, nb_channels][1]*dir_val.values],
+              [mean_vec[3] - s1*dir_val.vectors[:, nb_channels][3]*dir_val.values, mean_vec[3] + s1*dir_val.vectors[:, nb_channels][3]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[1] - s2*dir_val.vectors[:, nb_channels-1][1]*dir_val.values, mean_vec[1] + s2*dir_val.vectors[:, nb_channels-1][1]*dir_val.values],
+              [mean_vec[3] - s2*dir_val.vectors[:, nb_channels-1][3]*dir_val.values, mean_vec[3] + s2*dir_val.vectors[:, nb_channels-1][3]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
+    end
+
+
+
+    p14 = scatter(g_all[:, 1], g_all[:, 4], label="", markerstrokewidth=msw_main, color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    if flag2 == 1
+        scatter!(g_all2[:, 1], g_all2[:, 4], label="", color=color_p, markerstrokewidth=0.,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
+    xlims!((0, maxs[1]))
+    ylims!((0, maxs[4]))
+
+    if flag == 0
+        line_14 = fit(g_all[:, 1], g_all[:, 4], 1)
+        s0 = minimum(g_all[:, 1])
+        sn = maximum(g_all[:, 1])
+        plot!([s0, sn], [line_14(s0), line_14(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[3, 1] = cor(g_all[:, 1], g_all[:, 4])
+    elseif flag == 1
+        plot!([mean_vec[1] - s1*dir_val.vectors[:, nb_channels][1]*dir_val.values, mean_vec[1] + s1*dir_val.vectors[:, nb_channels][1]*dir_val.values],
+              [mean_vec[4] - s1*dir_val.vectors[:, nb_channels][4]*dir_val.values, mean_vec[4] + s1*dir_val.vectors[:, nb_channels][4]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[1] - s1*dir_val.vectors[:, nb_channels][1]*dir_val.values, mean_vec[1] + s1*dir_val.vectors[:, nb_channels][1]*dir_val.values],
+              [mean_vec[4] - s1*dir_val.vectors[:, nb_channels][4]*dir_val.values, mean_vec[4] + s1*dir_val.vectors[:, nb_channels][4]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[1] - s2*dir_val.vectors[:, nb_channels-1][1]*dir_val.values, mean_vec[1] + s2*dir_val.vectors[:, nb_channels-1][1]*dir_val.values],
+              [mean_vec[4] - s2*dir_val.vectors[:, nb_channels-1][4]*dir_val.values, mean_vec[4] + s2*dir_val.vectors[:, nb_channels-1][4]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
+    end
+
+
+
+    p15 = scatter(g_all[:, 1], g_all[:, 5], label="", markerstrokewidth=msw_main, color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    if flag2 == 1
+        scatter!(g_all2[:, 1], g_all2[:, 5], label="", color=color_p, markerstrokewidth=0.,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
+    xlims!((0, maxs[1]))
+    ylims!((0, maxs[5]))
+
+    if flag == 0
+        line_15 = fit(g_all[:, 1], g_all[:, 5], 1)
+        s0 = minimum(g_all[:, 1])
+        sn = maximum(g_all[:, 1])
+        plot!([s0, sn], [line_15(s0), line_15(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[4, 1] = cor(g_all[:, 1], g_all[:, 5])
+    elseif flag == 1
+        plot!([mean_vec[1] - s1*dir_val.vectors[:, nb_channels][1]*dir_val.values, mean_vec[1] + s1*dir_val.vectors[:, nb_channels][1]*dir_val.values],
+              [mean_vec[5] - s1*dir_val.vectors[:, nb_channels][5]*dir_val.values, mean_vec[5] + s1*dir_val.vectors[:, nb_channels][5]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[1] - s1*dir_val.vectors[:, nb_channels][1]*dir_val.values, mean_vec[1] + s1*dir_val.vectors[:, nb_channels][1]*dir_val.values],
+              [mean_vec[5] - s1*dir_val.vectors[:, nb_channels][5]*dir_val.values, mean_vec[5] + s1*dir_val.vectors[:, nb_channels][5]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[1] - s2*dir_val.vectors[:, nb_channels-1][1]*dir_val.values, mean_vec[1] + s2*dir_val.vectors[:, nb_channels-1][1]*dir_val.values],
+              [mean_vec[5] - s2*dir_val.vectors[:, nb_channels-1][5]*dir_val.values, mean_vec[5] + s2*dir_val.vectors[:, nb_channels-1][5]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
+    end
+
+
+
+    p16 = scatter(g_all[:, 1], g_all[:, 6], label="", markerstrokewidth=msw_main, color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    if flag2 == 1
+        scatter!(g_all2[:, 1], g_all2[:, 6], label="", color=color_p, markerstrokewidth=0.,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
+    xlims!((0, maxs[1]))
+    ylims!((0, maxs[6]))
+
+    if flag == 0
+        line_16 = fit(g_all[:, 1], g_all[:, 6], 1)
+        s0 = minimum(g_all[:, 1])
+        sn = maximum(g_all[:, 1])
+        plot!([s0, sn], [line_16(s0), line_16(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[5, 1] = cor(g_all[:, 1], g_all[:, 6])
+    elseif flag == 1
+        plot!([mean_vec[1] - s1*dir_val.vectors[:, nb_channels][1]*dir_val.values, mean_vec[1] + s1*dir_val.vectors[:, nb_channels][1]*dir_val.values],
+              [mean_vec[6] - s1*dir_val.vectors[:, nb_channels][6]*dir_val.values, mean_vec[6] + s1*dir_val.vectors[:, nb_channels][6]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[1] - s1*dir_val.vectors[:, nb_channels][1]*dir_val.values, mean_vec[1] + s1*dir_val.vectors[:, nb_channels][1]*dir_val.values],
+              [mean_vec[6] - s1*dir_val.vectors[:, nb_channels][6]*dir_val.values, mean_vec[6] + s1*dir_val.vectors[:, nb_channels][6]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[1] - s2*dir_val.vectors[:, nb_channels-1][1]*dir_val.values, mean_vec[1] + s2*dir_val.vectors[:, nb_channels-1][1]*dir_val.values],
+              [mean_vec[6] - s2*dir_val.vectors[:, nb_channels-1][6]*dir_val.values, mean_vec[6] + s2*dir_val.vectors[:, nb_channels-1][6]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
+    end
+
+
+
+    p17 = scatter(g_all[:, 1], g_all[:, 7], label="", markerstrokewidth=msw_main, color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    if flag2 == 1
+        scatter!(g_all2[:, 1], g_all2[:, 7], label="", color=color_p, markerstrokewidth=0.,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
+    xlims!((0, maxs[1]))
+    ylims!((0, maxs[7]))
+
+    if flag == 0
+        line_17 = fit(g_all[:, 1], g_all[:, 7], 1)
+        s0 = minimum(g_all[:, 1])
+        sn = maximum(g_all[:, 1])
+        plot!([s0, sn], [line_17(s0), line_17(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[6, 1] = cor(g_all[:, 1], g_all[:, 7])
+    elseif flag == 1
+        plot!([mean_vec[1] - s1*dir_val.vectors[:, nb_channels][1]*dir_val.values, mean_vec[1] + s1*dir_val.vectors[:, nb_channels][1]*dir_val.values],
+              [mean_vec[7] - s1*dir_val.vectors[:, nb_channels][7]*dir_val.values, mean_vec[7] + s1*dir_val.vectors[:, nb_channels][7]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[1] - s1*dir_val.vectors[:, nb_channels][1]*dir_val.values, mean_vec[1] + s1*dir_val.vectors[:, nb_channels][1]*dir_val.values],
+              [mean_vec[7] - s1*dir_val.vectors[:, nb_channels][7]*dir_val.values, mean_vec[7] + s1*dir_val.vectors[:, nb_channels][7]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[1] - s2*dir_val.vectors[:, nb_channels-1][1]*dir_val.values, mean_vec[1] + s2*dir_val.vectors[:, nb_channels-1][1]*dir_val.values],
+              [mean_vec[7] - s2*dir_val.vectors[:, nb_channels-1][7]*dir_val.values, mean_vec[7] + s2*dir_val.vectors[:, nb_channels-1][7]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
+    end
+
+
+
+    p18 = scatter(g_all[:, 1], g_all[:, 8], label="", markerstrokewidth=msw_main, color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    if flag2 == 1
+        scatter!(g_all2[:, 1], g_all2[:, 8], label="", color=color_p, markerstrokewidth=0.,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
+    xlims!((0, maxs[1]))
+    ylims!((0, maxs[8]))
+
+    if flag == 0
+        line_18 = fit(g_all[:, 1], g_all[:, 8], 1)
+        s0 = minimum(g_all[:, 1])
+        sn = maximum(g_all[:, 1])
+        plot!([s0, sn], [line_18(s0), line_18(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[7, 1] = cor(g_all[:, 1], g_all[:, 8])
+    elseif flag == 1
+        plot!([mean_vec[1] - s1*dir_val.vectors[:, nb_channels][1]*dir_val.values, mean_vec[1] + s1*dir_val.vectors[:, nb_channels][1]*dir_val.values],
+              [mean_vec[8] - s1*dir_val.vectors[:, nb_channels][8]*dir_val.values, mean_vec[8] + s1*dir_val.vectors[:, nb_channels][8]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[1] - s1*dir_val.vectors[:, nb_channels][1]*dir_val.values, mean_vec[1] + s1*dir_val.vectors[:, nb_channels][1]*dir_val.values],
+              [mean_vec[8] - s1*dir_val.vectors[:, nb_channels][8]*dir_val.values, mean_vec[8] + s1*dir_val.vectors[:, nb_channels][8]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[1] - s2*dir_val.vectors[:, nb_channels-1][1]*dir_val.values, mean_vec[1] + s2*dir_val.vectors[:, nb_channels-1][1]*dir_val.values],
+              [mean_vec[8] - s2*dir_val.vectors[:, nb_channels-1][8]*dir_val.values, mean_vec[8] + s2*dir_val.vectors[:, nb_channels-1][8]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
+    end
+
+
+
+    p23 = scatter(g_all[:, 2], g_all[:, 3], label="", markerstrokewidth=msw_main, color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    if flag2 == 1
+        scatter!(g_all2[:, 2], g_all2[:, 3], label="", color=color_p, markerstrokewidth=0.,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
+    xlims!((0, maxs[2]))
+    ylims!((0, maxs[3]))
+
+    if flag == 0
+        line_23 = fit(g_all[:, 2], g_all[:, 3], 1)
+        s0 = minimum(g_all[:, 2])
+        sn = maximum(g_all[:, 2])
+        plot!([s0, sn], [line_23(s0), line_23(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[2, 2] = cor(g_all[:, 2], g_all[:, 3])
+    elseif flag == 1
+        plot!([mean_vec[2] - s1*dir_val.vectors[:, nb_channels][2]*dir_val.values, mean_vec[2] + s1*dir_val.vectors[:, nb_channels][2]*dir_val.values],
+              [mean_vec[3] - s1*dir_val.vectors[:, nb_channels][3]*dir_val.values, mean_vec[3] + s1*dir_val.vectors[:, nb_channels][3]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[2] - s1*dir_val.vectors[:, nb_channels][2]*dir_val.values, mean_vec[2] + s1*dir_val.vectors[:, nb_channels][2]*dir_val.values],
+              [mean_vec[3] - s1*dir_val.vectors[:, nb_channels][3]*dir_val.values, mean_vec[3] + s1*dir_val.vectors[:, nb_channels][3]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[2] - s2*dir_val.vectors[:, nb_channels-1][2]*dir_val.values, mean_vec[2] + s2*dir_val.vectors[:, nb_channels-1][2]*dir_val.values],
+              [mean_vec[3] - s2*dir_val.vectors[:, nb_channels-1][3]*dir_val.values, mean_vec[3] + s2*dir_val.vectors[:, nb_channels-1][3]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
+    end
+
+
+
+    p24 = scatter(g_all[:, 2], g_all[:, 4], label="", markerstrokewidth=msw_main, color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    if flag2 == 1
+        scatter!(g_all2[:, 2], g_all2[:, 4], label="", color=color_p, markerstrokewidth=0.,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
+    xlims!((0, maxs[2]))
+    ylims!((0, maxs[4]))
+
+    if flag == 0
+        line_24 = fit(g_all[:, 2], g_all[:, 4], 1)
+        s0 = minimum(g_all[:, 2])
+        sn = maximum(g_all[:, 2])
+        plot!([s0, sn], [line_24(s0), line_24(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[3, 2] = cor(g_all[:, 2], g_all[:, 4])
+    elseif flag == 1
+        plot!([mean_vec[2] - s1*dir_val.vectors[:, nb_channels][2]*dir_val.values, mean_vec[2] + s1*dir_val.vectors[:, nb_channels][2]*dir_val.values],
+              [mean_vec[4] - s1*dir_val.vectors[:, nb_channels][4]*dir_val.values, mean_vec[4] + s1*dir_val.vectors[:, nb_channels][4]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[2] - s1*dir_val.vectors[:, nb_channels][2]*dir_val.values, mean_vec[2] + s1*dir_val.vectors[:, nb_channels][2]*dir_val.values],
+              [mean_vec[4] - s1*dir_val.vectors[:, nb_channels][4]*dir_val.values, mean_vec[4] + s1*dir_val.vectors[:, nb_channels][4]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[2] - s2*dir_val.vectors[:, nb_channels-1][2]*dir_val.values, mean_vec[2] + s2*dir_val.vectors[:, nb_channels-1][2]*dir_val.values],
+              [mean_vec[4] - s2*dir_val.vectors[:, nb_channels-1][4]*dir_val.values, mean_vec[4] + s2*dir_val.vectors[:, nb_channels-1][4]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
+    end
+
+
+
+    p25 = scatter(g_all[:, 2], g_all[:, 5], label="", markerstrokewidth=msw_main, color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    if flag2 == 1
+        scatter!(g_all2[:, 2], g_all2[:, 5], label="", color=color_p, markerstrokewidth=0.,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
+    xlims!((0, maxs[2]))
+    ylims!((0, maxs[5]))
+
+    if flag == 0
+        line_25 = fit(g_all[:, 2], g_all[:, 5], 1)
+        s0 = minimum(g_all[:, 2])
+        sn = maximum(g_all[:, 2])
+        plot!([s0, sn], [line_25(s0), line_25(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[4, 2] = cor(g_all[:, 2], g_all[:, 5])
+    elseif flag == 1
+        plot!([mean_vec[2] - s1*dir_val.vectors[:, nb_channels][2]*dir_val.values, mean_vec[2] + s1*dir_val.vectors[:, nb_channels][2]*dir_val.values],
+              [mean_vec[5] - s1*dir_val.vectors[:, nb_channels][5]*dir_val.values, mean_vec[5] + s1*dir_val.vectors[:, nb_channels][5]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[2] - s1*dir_val.vectors[:, nb_channels][2]*dir_val.values, mean_vec[2] + s1*dir_val.vectors[:, nb_channels][2]*dir_val.values],
+              [mean_vec[5] - s1*dir_val.vectors[:, nb_channels][5]*dir_val.values, mean_vec[5] + s1*dir_val.vectors[:, nb_channels][5]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[2] - s2*dir_val.vectors[:, nb_channels-1][2]*dir_val.values, mean_vec[2] + s2*dir_val.vectors[:, nb_channels-1][2]*dir_val.values],
+              [mean_vec[5] - s2*dir_val.vectors[:, nb_channels-1][5]*dir_val.values, mean_vec[5] + s2*dir_val.vectors[:, nb_channels-1][5]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
+    end
+
+
+
+    p26 = scatter(g_all[:, 2], g_all[:, 6], label="", markerstrokewidth=msw_main, color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    if flag2 == 1
+        scatter!(g_all2[:, 2], g_all2[:, 6], label="", color=color_p, markerstrokewidth=0.,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
+    xlims!((0, maxs[2]))
+    ylims!((0, maxs[6]))
+
+    if flag == 0
+        line_26 = fit(g_all[:, 2], g_all[:, 6], 1)
+        s0 = minimum(g_all[:, 2])
+        sn = maximum(g_all[:, 2])
+        plot!([s0, sn], [line_26(s0), line_26(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[5, 2] = cor(g_all[:, 2], g_all[:, 6])
+    elseif flag == 1
+        plot!([mean_vec[2] - s1*dir_val.vectors[:, nb_channels][2]*dir_val.values, mean_vec[2] + s1*dir_val.vectors[:, nb_channels][2]*dir_val.values],
+              [mean_vec[6] - s1*dir_val.vectors[:, nb_channels][6]*dir_val.values, mean_vec[6] + s1*dir_val.vectors[:, nb_channels][6]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[2] - s1*dir_val.vectors[:, nb_channels][2]*dir_val.values, mean_vec[2] + s1*dir_val.vectors[:, nb_channels][2]*dir_val.values],
+              [mean_vec[6] - s1*dir_val.vectors[:, nb_channels][6]*dir_val.values, mean_vec[6] + s1*dir_val.vectors[:, nb_channels][6]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[2] - s2*dir_val.vectors[:, nb_channels-1][2]*dir_val.values, mean_vec[2] + s2*dir_val.vectors[:, nb_channels-1][2]*dir_val.values],
+              [mean_vec[6] - s2*dir_val.vectors[:, nb_channels-1][6]*dir_val.values, mean_vec[6] + s2*dir_val.vectors[:, nb_channels-1][6]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
+    end
+
+
+
+    p27 = scatter(g_all[:, 2], g_all[:, 7], label="", markerstrokewidth=msw_main, color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    if flag2 == 1
+        scatter!(g_all2[:, 2], g_all2[:, 7], label="", color=color_p, markerstrokewidth=0.,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
+    xlims!((0, maxs[2]))
+    ylims!((0, maxs[7]))
+
+    if flag == 0
+        line_27 = fit(g_all[:, 2], g_all[:, 7], 1)
+        s0 = minimum(g_all[:, 2])
+        sn = maximum(g_all[:, 2])
+        plot!([s0, sn], [line_27(s0), line_27(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[6, 2] = cor(g_all[:, 2], g_all[:, 7])
+    elseif flag == 1
+        plot!([mean_vec[2] - s1*dir_val.vectors[:, nb_channels][2]*dir_val.values, mean_vec[2] + s1*dir_val.vectors[:, nb_channels][2]*dir_val.values],
+              [mean_vec[7] - s1*dir_val.vectors[:, nb_channels][7]*dir_val.values, mean_vec[7] + s1*dir_val.vectors[:, nb_channels][7]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[2] - s1*dir_val.vectors[:, nb_channels][2]*dir_val.values, mean_vec[2] + s1*dir_val.vectors[:, nb_channels][2]*dir_val.values],
+              [mean_vec[7] - s1*dir_val.vectors[:, nb_channels][7]*dir_val.values, mean_vec[7] + s1*dir_val.vectors[:, nb_channels][7]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[2] - s2*dir_val.vectors[:, nb_channels-1][2]*dir_val.values, mean_vec[2] + s2*dir_val.vectors[:, nb_channels-1][2]*dir_val.values],
+              [mean_vec[7] - s2*dir_val.vectors[:, nb_channels-1][7]*dir_val.values, mean_vec[7] + s2*dir_val.vectors[:, nb_channels-1][7]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
+    end
+
+
+
+    p28 = scatter(g_all[:, 2], g_all[:, 8], label="", markerstrokewidth=msw_main, color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    if flag2 == 1
+        scatter!(g_all2[:, 2], g_all2[:, 8], label="", color=color_p, markerstrokewidth=0.,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
+    xlims!((0, maxs[2]))
+    ylims!((0, maxs[8]))
+
+    if flag == 0
+        line_28 = fit(g_all[:, 2], g_all[:, 8], 1)
+        s0 = minimum(g_all[:, 2])
+        sn = maximum(g_all[:, 2])
+        plot!([s0, sn], [line_28(s0), line_28(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[7, 2] = cor(g_all[:, 2], g_all[:, 8])
+    elseif flag == 1
+        plot!([mean_vec[2] - s1*dir_val.vectors[:, nb_channels][2]*dir_val.values, mean_vec[2] + s1*dir_val.vectors[:, nb_channels][2]*dir_val.values],
+              [mean_vec[8] - s1*dir_val.vectors[:, nb_channels][8]*dir_val.values, mean_vec[8] + s1*dir_val.vectors[:, nb_channels][8]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[2] - s1*dir_val.vectors[:, nb_channels][2]*dir_val.values, mean_vec[2] + s1*dir_val.vectors[:, nb_channels][2]*dir_val.values],
+              [mean_vec[8] - s1*dir_val.vectors[:, nb_channels][8]*dir_val.values, mean_vec[8] + s1*dir_val.vectors[:, nb_channels][8]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[2] - s2*dir_val.vectors[:, nb_channels-1][2]*dir_val.values, mean_vec[2] + s2*dir_val.vectors[:, nb_channels-1][2]*dir_val.values],
+              [mean_vec[8] - s2*dir_val.vectors[:, nb_channels-1][8]*dir_val.values, mean_vec[8] + s2*dir_val.vectors[:, nb_channels-1][8]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
+    end
+
+
+
+    p34 = scatter(g_all[:, 3], g_all[:, 4], label="", markerstrokewidth=msw_main, color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    if flag2 == 1
+        scatter!(g_all2[:, 3], g_all2[:, 4], label="", color=color_p, markerstrokewidth=0.,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
+    xlims!((0, maxs[3]))
+    ylims!((0, maxs[4]))
+
+    if flag == 0
+        line_34 = fit(g_all[:, 3], g_all[:, 4], 1)
+        s0 = minimum(g_all[:, 3])
+        sn = maximum(g_all[:, 3])
+        plot!([s0, sn], [line_34(s0), line_34(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[3, 3] = cor(g_all[:, 3], g_all[:, 4])
+    elseif flag == 1
+        plot!([mean_vec[3] - s1*dir_val.vectors[:, nb_channels][3]*dir_val.values, mean_vec[3] + s1*dir_val.vectors[:, nb_channels][3]*dir_val.values],
+              [mean_vec[4] - s1*dir_val.vectors[:, nb_channels][4]*dir_val.values, mean_vec[4] + s1*dir_val.vectors[:, nb_channels][4]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[3] - s1*dir_val.vectors[:, nb_channels][3]*dir_val.values, mean_vec[3] + s1*dir_val.vectors[:, nb_channels][3]*dir_val.values],
+              [mean_vec[4] - s1*dir_val.vectors[:, nb_channels][4]*dir_val.values, mean_vec[4] + s1*dir_val.vectors[:, nb_channels][4]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[3] - s2*dir_val.vectors[:, nb_channels-1][3]*dir_val.values, mean_vec[3] + s2*dir_val.vectors[:, nb_channels-1][3]*dir_val.values],
+              [mean_vec[4] - s2*dir_val.vectors[:, nb_channels-1][4]*dir_val.values, mean_vec[4] + s2*dir_val.vectors[:, nb_channels-1][4]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
+    end
+
+
+
+    p35 = scatter(g_all[:, 3], g_all[:, 5], label="", markerstrokewidth=msw_main, color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    if flag2 == 1
+        scatter!(g_all2[:, 3], g_all2[:, 5], label="", color=color_p, markerstrokewidth=0.,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
+    xlims!((0, maxs[3]))
+    ylims!((0, maxs[5]))
+
+    if flag == 0
+        line_35 = fit(g_all[:, 3], g_all[:, 5], 1)
+        s0 = minimum(g_all[:, 3])
+        sn = maximum(g_all[:, 3])
+        plot!([s0, sn], [line_35(s0), line_35(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[4, 3] = cor(g_all[:, 3], g_all[:, 5])
+    elseif flag == 1
+        plot!([mean_vec[3] - s1*dir_val.vectors[:, nb_channels][3]*dir_val.values, mean_vec[3] + s1*dir_val.vectors[:, nb_channels][3]*dir_val.values],
+              [mean_vec[5] - s1*dir_val.vectors[:, nb_channels][5]*dir_val.values, mean_vec[5] + s1*dir_val.vectors[:, nb_channels][5]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[3] - s1*dir_val.vectors[:, nb_channels][3]*dir_val.values, mean_vec[3] + s1*dir_val.vectors[:, nb_channels][3]*dir_val.values],
+              [mean_vec[5] - s1*dir_val.vectors[:, nb_channels][5]*dir_val.values, mean_vec[5] + s1*dir_val.vectors[:, nb_channels][5]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[3] - s2*dir_val.vectors[:, nb_channels-1][3]*dir_val.values, mean_vec[3] + s2*dir_val.vectors[:, nb_channels-1][3]*dir_val.values],
+              [mean_vec[5] - s2*dir_val.vectors[:, nb_channels-1][5]*dir_val.values, mean_vec[5] + s2*dir_val.vectors[:, nb_channels-1][5]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
+    end
+
+
+
+    p36 = scatter(g_all[:, 3], g_all[:, 6], label="", markerstrokewidth=msw_main, color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    if flag2 == 1
+        scatter!(g_all2[:, 3], g_all2[:, 6], label="", color=color_p, markerstrokewidth=0.,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
+    xlims!((0, maxs[3]))
+    ylims!((0, maxs[6]))
+
+    if flag == 0
+        line_36 = fit(g_all[:, 3], g_all[:, 6], 1)
+        s0 = minimum(g_all[:, 3])
+        sn = maximum(g_all[:, 3])
+        plot!([s0, sn], [line_36(s0), line_36(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[5, 3] = cor(g_all[:, 3], g_all[:, 6])
+    elseif flag == 1
+        plot!([mean_vec[3] - s1*dir_val.vectors[:, nb_channels][3]*dir_val.values, mean_vec[3] + s1*dir_val.vectors[:, nb_channels][3]*dir_val.values],
+              [mean_vec[6] - s1*dir_val.vectors[:, nb_channels][6]*dir_val.values, mean_vec[6] + s1*dir_val.vectors[:, nb_channels][6]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[3] - s1*dir_val.vectors[:, nb_channels][3]*dir_val.values, mean_vec[3] + s1*dir_val.vectors[:, nb_channels][3]*dir_val.values],
+              [mean_vec[6] - s1*dir_val.vectors[:, nb_channels][6]*dir_val.values, mean_vec[6] + s1*dir_val.vectors[:, nb_channels][6]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[3] - s2*dir_val.vectors[:, nb_channels-1][3]*dir_val.values, mean_vec[3] + s2*dir_val.vectors[:, nb_channels-1][3]*dir_val.values],
+              [mean_vec[6] - s2*dir_val.vectors[:, nb_channels-1][6]*dir_val.values, mean_vec[6] + s2*dir_val.vectors[:, nb_channels-1][6]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
+    end
+
+
+
+    p37 = scatter(g_all[:, 3], g_all[:, 7], label="", markerstrokewidth=msw_main, color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    if flag2 == 1
+        scatter!(g_all2[:, 3], g_all2[:, 7], label="", color=color_p, markerstrokewidth=0.,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
+    xlims!((0, maxs[3]))
+    ylims!((0, maxs[7]))
+
+    if flag == 0
+        line_37 = fit(g_all[:, 3], g_all[:, 7], 1)
+        s0 = minimum(g_all[:, 3])
+        sn = maximum(g_all[:, 3])
+        plot!([s0, sn], [line_37(s0), line_37(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[6, 3] = cor(g_all[:, 3], g_all[:, 7])
+    elseif flag == 1
+        plot!([mean_vec[3] - s1*dir_val.vectors[:, nb_channels][3]*dir_val.values, mean_vec[3] + s1*dir_val.vectors[:, nb_channels][3]*dir_val.values],
+              [mean_vec[7] - s1*dir_val.vectors[:, nb_channels][7]*dir_val.values, mean_vec[7] + s1*dir_val.vectors[:, nb_channels][7]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[3] - s1*dir_val.vectors[:, nb_channels][3]*dir_val.values, mean_vec[3] + s1*dir_val.vectors[:, nb_channels][3]*dir_val.values],
+              [mean_vec[7] - s1*dir_val.vectors[:, nb_channels][7]*dir_val.values, mean_vec[7] + s1*dir_val.vectors[:, nb_channels][7]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[3] - s2*dir_val.vectors[:, nb_channels-1][3]*dir_val.values, mean_vec[3] + s2*dir_val.vectors[:, nb_channels-1][3]*dir_val.values],
+              [mean_vec[7] - s2*dir_val.vectors[:, nb_channels-1][7]*dir_val.values, mean_vec[7] + s2*dir_val.vectors[:, nb_channels-1][7]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
+    end
+
+
+
+    p38 = scatter(g_all[:, 3], g_all[:, 8], label="", markerstrokewidth=msw_main, color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    if flag2 == 1
+        scatter!(g_all2[:, 3], g_all2[:, 8], label="", color=color_p, markerstrokewidth=0.,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
+    xlims!((0, maxs[3]))
+    ylims!((0, maxs[8]))
+
+    if flag == 0
+        line_38 = fit(g_all[:, 3], g_all[:, 8], 1)
+        s0 = minimum(g_all[:, 3])
+        sn = maximum(g_all[:, 3])
+        plot!([s0, sn], [line_38(s0), line_38(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[7, 3] = cor(g_all[:, 3], g_all[:, 8])
+    elseif flag == 1
+        plot!([mean_vec[3] - s1*dir_val.vectors[:, nb_channels][3]*dir_val.values, mean_vec[3] + s1*dir_val.vectors[:, nb_channels][3]*dir_val.values],
+              [mean_vec[8] - s1*dir_val.vectors[:, nb_channels][8]*dir_val.values, mean_vec[8] + s1*dir_val.vectors[:, nb_channels][8]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[3] - s1*dir_val.vectors[:, nb_channels][3]*dir_val.values, mean_vec[3] + s1*dir_val.vectors[:, nb_channels][3]*dir_val.values],
+              [mean_vec[8] - s1*dir_val.vectors[:, nb_channels][8]*dir_val.values, mean_vec[8] + s1*dir_val.vectors[:, nb_channels][8]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[3] - s2*dir_val.vectors[:, nb_channels-1][3]*dir_val.values, mean_vec[3] + s2*dir_val.vectors[:, nb_channels-1][3]*dir_val.values],
+              [mean_vec[8] - s2*dir_val.vectors[:, nb_channels-1][8]*dir_val.values, mean_vec[8] + s2*dir_val.vectors[:, nb_channels-1][8]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
+    end
+
+
+
+    p45 = scatter(g_all[:, 4], g_all[:, 5], label="", markerstrokewidth=msw_main, color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    if flag2 == 1
+        scatter!(g_all2[:, 4], g_all2[:, 5], label="", color=color_p, markerstrokewidth=0.,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
+    xlims!((0, maxs[4]))
+    ylims!((0, maxs[5]))
+
+    if flag == 0
+        line_45 = fit(g_all[:, 4], g_all[:, 5], 1)
+        s0 = minimum(g_all[:, 4])
+        sn = maximum(g_all[:, 4])
+        plot!([s0, sn], [line_45(s0), line_45(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[4, 4] = cor(g_all[:, 4], g_all[:, 5])
+    elseif flag == 1
+        plot!([mean_vec[4] - s1*dir_val.vectors[:, nb_channels][4]*dir_val.values, mean_vec[4] + s1*dir_val.vectors[:, nb_channels][4]*dir_val.values],
+              [mean_vec[5] - s1*dir_val.vectors[:, nb_channels][5]*dir_val.values, mean_vec[5] + s1*dir_val.vectors[:, nb_channels][5]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[4] - s1*dir_val.vectors[:, nb_channels][4]*dir_val.values, mean_vec[4] + s1*dir_val.vectors[:, nb_channels][4]*dir_val.values],
+              [mean_vec[5] - s1*dir_val.vectors[:, nb_channels][5]*dir_val.values, mean_vec[5] + s1*dir_val.vectors[:, nb_channels][5]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[4] - s2*dir_val.vectors[:, nb_channels-1][4]*dir_val.values, mean_vec[4] + s2*dir_val.vectors[:, nb_channels-1][4]*dir_val.values],
+              [mean_vec[5] - s2*dir_val.vectors[:, nb_channels-1][5]*dir_val.values, mean_vec[5] + s2*dir_val.vectors[:, nb_channels-1][5]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
+    end
+
+
+
+    p46 = scatter(g_all[:, 4], g_all[:, 6], label="", markerstrokewidth=msw_main, color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    if flag2 == 1
+        scatter!(g_all2[:, 4], g_all2[:, 6], label="", color=color_p, markerstrokewidth=0.,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
+    xlims!((0, maxs[4]))
+    ylims!((0, maxs[6]))
+
+    if flag == 0
+        line_46 = fit(g_all[:, 4], g_all[:, 6], 1)
+        s0 = minimum(g_all[:, 4])
+        sn = maximum(g_all[:, 4])
+        plot!([s0, sn], [line_46(s0), line_46(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[5, 4] = cor(g_all[:, 4], g_all[:, 6])
+    elseif flag == 1
+        plot!([mean_vec[4] - s1*dir_val.vectors[:, nb_channels][4]*dir_val.values, mean_vec[4] + s1*dir_val.vectors[:, nb_channels][4]*dir_val.values],
+              [mean_vec[6] - s1*dir_val.vectors[:, nb_channels][6]*dir_val.values, mean_vec[6] + s1*dir_val.vectors[:, nb_channels][6]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[4] - s1*dir_val.vectors[:, nb_channels][4]*dir_val.values, mean_vec[4] + s1*dir_val.vectors[:, nb_channels][4]*dir_val.values],
+              [mean_vec[6] - s1*dir_val.vectors[:, nb_channels][6]*dir_val.values, mean_vec[6] + s1*dir_val.vectors[:, nb_channels][6]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[4] - s2*dir_val.vectors[:, nb_channels-1][4]*dir_val.values, mean_vec[4] + s2*dir_val.vectors[:, nb_channels-1][4]*dir_val.values],
+              [mean_vec[6] - s2*dir_val.vectors[:, nb_channels-1][6]*dir_val.values, mean_vec[6] + s2*dir_val.vectors[:, nb_channels-1][6]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
+    end
+
+
+
+    p47 = scatter(g_all[:, 4], g_all[:, 7], label="", markerstrokewidth=msw_main, color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    if flag2 == 1
+        scatter!(g_all2[:, 4], g_all2[:, 7], label="", color=color_p, markerstrokewidth=0.,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
+    xlims!((0, maxs[4]))
+    ylims!((0, maxs[7]))
+
+    if flag == 0
+        line_47 = fit(g_all[:, 4], g_all[:, 7], 1)
+        s0 = minimum(g_all[:, 4])
+        sn = maximum(g_all[:, 4])
+        plot!([s0, sn], [line_47(s0), line_47(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[6, 4] = cor(g_all[:, 4], g_all[:, 7])
+    elseif flag == 1
+        plot!([mean_vec[4] - s1*dir_val.vectors[:, nb_channels][4]*dir_val.values, mean_vec[4] + s1*dir_val.vectors[:, nb_channels][4]*dir_val.values],
+              [mean_vec[7] - s1*dir_val.vectors[:, nb_channels][7]*dir_val.values, mean_vec[7] + s1*dir_val.vectors[:, nb_channels][7]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[4] - s1*dir_val.vectors[:, nb_channels][4]*dir_val.values, mean_vec[4] + s1*dir_val.vectors[:, nb_channels][4]*dir_val.values],
+              [mean_vec[7] - s1*dir_val.vectors[:, nb_channels][7]*dir_val.values, mean_vec[7] + s1*dir_val.vectors[:, nb_channels][7]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[4] - s2*dir_val.vectors[:, nb_channels-1][4]*dir_val.values, mean_vec[4] + s2*dir_val.vectors[:, nb_channels-1][4]*dir_val.values],
+              [mean_vec[7] - s2*dir_val.vectors[:, nb_channels-1][7]*dir_val.values, mean_vec[7] + s2*dir_val.vectors[:, nb_channels-1][7]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
+    end
+
+
+
+    p48 = scatter(g_all[:, 4], g_all[:, 8], label="", markerstrokewidth=msw_main, color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    if flag2 == 1
+        scatter!(g_all2[:, 4], g_all2[:, 8], label="", color=color_p, markerstrokewidth=0.,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
+    xlims!((0, maxs[4]))
+    ylims!((0, maxs[8]))
+
+    if flag == 0
+        line_48 = fit(g_all[:, 4], g_all[:, 8], 1)
+        s0 = minimum(g_all[:, 4])
+        sn = maximum(g_all[:, 4])
+        plot!([s0, sn], [line_48(s0), line_48(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[7, 4] = cor(g_all[:, 4], g_all[:, 8])
+    elseif flag == 1
+        plot!([mean_vec[4] - s1*dir_val.vectors[:, nb_channels][4]*dir_val.values, mean_vec[4] + s1*dir_val.vectors[:, nb_channels][4]*dir_val.values],
+              [mean_vec[8] - s1*dir_val.vectors[:, nb_channels][8]*dir_val.values, mean_vec[8] + s1*dir_val.vectors[:, nb_channels][8]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[4] - s1*dir_val.vectors[:, nb_channels][4]*dir_val.values, mean_vec[4] + s1*dir_val.vectors[:, nb_channels][4]*dir_val.values],
+              [mean_vec[8] - s1*dir_val.vectors[:, nb_channels][8]*dir_val.values, mean_vec[8] + s1*dir_val.vectors[:, nb_channels][8]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[4] - s2*dir_val.vectors[:, nb_channels-1][4]*dir_val.values, mean_vec[4] + s2*dir_val.vectors[:, nb_channels-1][4]*dir_val.values],
+              [mean_vec[8] - s2*dir_val.vectors[:, nb_channels-1][8]*dir_val.values, mean_vec[8] + s2*dir_val.vectors[:, nb_channels-1][8]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
+    end
+
+
+
+    p56 = scatter(g_all[:, 5], g_all[:, 6], label="", markerstrokewidth=msw_main, color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    if flag2 == 1
+        scatter!(g_all2[:, 5], g_all2[:, 6], label="", color=color_p, markerstrokewidth=0.,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
+    xlims!((0, maxs[5]))
+    ylims!((0, maxs[6]))
+
+    if flag == 0
+        line_56 = fit(g_all[:, 5], g_all[:, 6], 1)
+        s0 = minimum(g_all[:, 5])
+        sn = maximum(g_all[:, 5])
+        plot!([s0, sn], [line_56(s0), line_56(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[5, 5] = cor(g_all[:, 5], g_all[:, 6])
+    elseif flag == 1
+        plot!([mean_vec[5] - s1*dir_val.vectors[:, nb_channels][5]*dir_val.values, mean_vec[5] + s1*dir_val.vectors[:, nb_channels][5]*dir_val.values],
+              [mean_vec[6] - s1*dir_val.vectors[:, nb_channels][6]*dir_val.values, mean_vec[6] + s1*dir_val.vectors[:, nb_channels][6]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[5] - s1*dir_val.vectors[:, nb_channels][5]*dir_val.values, mean_vec[5] + s1*dir_val.vectors[:, nb_channels][5]*dir_val.values],
+              [mean_vec[6] - s1*dir_val.vectors[:, nb_channels][6]*dir_val.values, mean_vec[6] + s1*dir_val.vectors[:, nb_channels][6]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[5] - s2*dir_val.vectors[:, nb_channels-1][5]*dir_val.values, mean_vec[5] + s2*dir_val.vectors[:, nb_channels-1][5]*dir_val.values],
+              [mean_vec[6] - s2*dir_val.vectors[:, nb_channels-1][6]*dir_val.values, mean_vec[6] + s2*dir_val.vectors[:, nb_channels-1][6]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
+    end
+
+
+
+    p57 = scatter(g_all[:, 5], g_all[:, 7], label="", markerstrokewidth=msw_main, color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    if flag2 == 1
+        scatter!(g_all2[:, 5], g_all2[:, 7], label="", color=color_p, markerstrokewidth=0.,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
+    xlims!((0, maxs[5]))
+    ylims!((0, maxs[7]))
+
+    if flag == 0
+        line_57 = fit(g_all[:, 5], g_all[:, 7], 1)
+        s0 = minimum(g_all[:, 5])
+        sn = maximum(g_all[:, 5])
+        plot!([s0, sn], [line_57(s0), line_57(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[6, 5] = cor(g_all[:, 5], g_all[:, 7])
+    elseif flag == 1
+        plot!([mean_vec[5] - s1*dir_val.vectors[:, nb_channels][5]*dir_val.values, mean_vec[5] + s1*dir_val.vectors[:, nb_channels][5]*dir_val.values],
+              [mean_vec[7] - s1*dir_val.vectors[:, nb_channels][7]*dir_val.values, mean_vec[7] + s1*dir_val.vectors[:, nb_channels][7]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[5] - s1*dir_val.vectors[:, nb_channels][5]*dir_val.values, mean_vec[5] + s1*dir_val.vectors[:, nb_channels][5]*dir_val.values],
+              [mean_vec[7] - s1*dir_val.vectors[:, nb_channels][7]*dir_val.values, mean_vec[7] + s1*dir_val.vectors[:, nb_channels][7]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[5] - s2*dir_val.vectors[:, nb_channels-1][5]*dir_val.values, mean_vec[5] + s2*dir_val.vectors[:, nb_channels-1][5]*dir_val.values],
+              [mean_vec[7] - s2*dir_val.vectors[:, nb_channels-1][7]*dir_val.values, mean_vec[7] + s2*dir_val.vectors[:, nb_channels-1][7]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
+    end
+
+
+
+    p58 = scatter(g_all[:, 5], g_all[:, 8], label="", markerstrokewidth=msw_main, color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    if flag2 == 1
+        scatter!(g_all2[:, 5], g_all2[:, 8], label="", color=color_p, markerstrokewidth=0.,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
+    xlims!((0, maxs[5]))
+    ylims!((0, maxs[8]))
+
+    if flag == 0
+        line_58 = fit(g_all[:, 5], g_all[:, 8], 1)
+        s0 = minimum(g_all[:, 5])
+        sn = maximum(g_all[:, 5])
+        plot!([s0, sn], [line_58(s0), line_58(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[6, 5] = cor(g_all[:, 5], g_all[:, 8])
+    elseif flag == 1
+        plot!([mean_vec[5] - s1*dir_val.vectors[:, nb_channels][5]*dir_val.values, mean_vec[5] + s1*dir_val.vectors[:, nb_channels][5]*dir_val.values],
+              [mean_vec[8] - s1*dir_val.vectors[:, nb_channels][8]*dir_val.values, mean_vec[8] + s1*dir_val.vectors[:, nb_channels][8]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[5] - s1*dir_val.vectors[:, nb_channels][5]*dir_val.values, mean_vec[5] + s1*dir_val.vectors[:, nb_channels][5]*dir_val.values],
+              [mean_vec[8] - s1*dir_val.vectors[:, nb_channels][8]*dir_val.values, mean_vec[8] + s1*dir_val.vectors[:, nb_channels][8]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[5] - s2*dir_val.vectors[:, nb_channels-1][5]*dir_val.values, mean_vec[5] + s2*dir_val.vectors[:, nb_channels-1][5]*dir_val.values],
+              [mean_vec[8] - s2*dir_val.vectors[:, nb_channels-1][8]*dir_val.values, mean_vec[8] + s2*dir_val.vectors[:, nb_channels-1][8]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
+    end
+
+
+
+    p67 = scatter(g_all[:, 6], g_all[:, 7], label="", markerstrokewidth=msw_main, color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    if flag2 == 1
+        scatter!(g_all2[:, 6], g_all2[:, 7], label="", color=color_p, markerstrokewidth=0.,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
+    xlims!((0, maxs[6]))
+    ylims!((0, maxs[7]))
+
+    if flag == 0
+        line_67 = fit(g_all[:, 6], g_all[:, 7], 1)
+        s0 = minimum(g_all[:, 6])
+        sn = maximum(g_all[:, 6])
+        plot!([s0, sn], [line_67(s0), line_67(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[6, 6] = cor(g_all[:, 6], g_all[:, 7])
+    elseif flag == 1
+        plot!([mean_vec[6] - s1*dir_val.vectors[:, nb_channels][6]*dir_val.values, mean_vec[6] + s1*dir_val.vectors[:, nb_channels][6]*dir_val.values],
+              [mean_vec[7] - s1*dir_val.vectors[:, nb_channels][7]*dir_val.values, mean_vec[7] + s1*dir_val.vectors[:, nb_channels][7]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[6] - s1*dir_val.vectors[:, nb_channels][6]*dir_val.values, mean_vec[6] + s1*dir_val.vectors[:, nb_channels][6]*dir_val.values],
+              [mean_vec[7] - s1*dir_val.vectors[:, nb_channels][7]*dir_val.values, mean_vec[7] + s1*dir_val.vectors[:, nb_channels][7]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[6] - s2*dir_val.vectors[:, nb_channels-1][6]*dir_val.values, mean_vec[6] + s2*dir_val.vectors[:, nb_channels-1][6]*dir_val.values],
+              [mean_vec[7] - s2*dir_val.vectors[:, nb_channels-1][7]*dir_val.values, mean_vec[7] + s2*dir_val.vectors[:, nb_channels-1][7]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
+    end
+
+
+
+    p68 = scatter(g_all[:, 6], g_all[:, 8], label="", markerstrokewidth=msw_main, color=color_p,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    if flag2 == 1
+        scatter!(g_all2[:, 6], g_all2[:, 8], label="", color=color_p, markerstrokewidth=0.,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
+    xlims!((0, maxs[6]))
+    ylims!((0, maxs[8]))
+
+    if flag == 0
+        line_68 = fit(g_all[:, 6], g_all[:, 8], 1)
+        s0 = minimum(g_all[:, 6])
+        sn = maximum(g_all[:, 6])
+        plot!([s0, sn], [line_68(s0), line_68(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[7, 6] = cor(g_all[:, 6], g_all[:, 8])
+    elseif flag == 1
+        plot!([mean_vec[6] - s1*dir_val.vectors[:, nb_channels][6]*dir_val.values, mean_vec[6] + s1*dir_val.vectors[:, nb_channels][6]*dir_val.values],
+              [mean_vec[8] - s1*dir_val.vectors[:, nb_channels][8]*dir_val.values, mean_vec[8] + s1*dir_val.vectors[:, nb_channels][8]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[6] - s1*dir_val.vectors[:, nb_channels][6]*dir_val.values, mean_vec[6] + s1*dir_val.vectors[:, nb_channels][6]*dir_val.values],
+              [mean_vec[8] - s1*dir_val.vectors[:, nb_channels][8]*dir_val.values, mean_vec[8] + s1*dir_val.vectors[:, nb_channels][8]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[6] - s2*dir_val.vectors[:, nb_channels-1][6]*dir_val.values, mean_vec[6] + s2*dir_val.vectors[:, nb_channels-1][6]*dir_val.values],
+              [mean_vec[8] - s2*dir_val.vectors[:, nb_channels-1][8]*dir_val.values, mean_vec[8] + s2*dir_val.vectors[:, nb_channels-1][8]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
+    end
+
+
+
+    p78 = scatter(g_all[:, 7], g_all[:, 8], label="", markerstrokewidth=msw_main, color=color_p, right_margin=15Plots.mm,
+                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+    if flag2 == 1
+        scatter!(g_all2[:, 7], g_all2[:, 8], label="", color=color_p, markerstrokewidth=0.,
+                 grid=false, ticks=false, tickfontsize=10, markershape=m_shape2, guidefontsize=18)
+    end
+    annotate!(maxs[7]*1.3, maxs[8]/2, Plots.text(names[8], :black, :center, 18))
+    xlims!((0, maxs[7]))
+    ylims!((0, maxs[8]))
+
+    if flag == 0
+        line_78 = fit(g_all[:, 7], g_all[:, 8], 1)
+        s0 = minimum(g_all[:, 7])
+        sn = maximum(g_all[:, 7])
+        plot!([s0, sn], [line_78(s0), line_78(sn)], linewidth=2, label="", linecolor="black")
+
+        cors[7, 7] = cor(g_all[:, 7], g_all[:, 8])
+        display(cors)
+    elseif flag == 1
+        plot!([mean_vec[7] - s1*dir_val.vectors[:, nb_channels][7]*dir_val.values, mean_vec[7] + s1*dir_val.vectors[:, nb_channels][7]*dir_val.values],
+              [mean_vec[8] - s1*dir_val.vectors[:, nb_channels][8]*dir_val.values, mean_vec[8] + s1*dir_val.vectors[:, nb_channels][8]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+    elseif flag == 2
+        plot!([mean_vec[7] - s1*dir_val.vectors[:, nb_channels][7]*dir_val.values, mean_vec[7] + s1*dir_val.vectors[:, nb_channels][7]*dir_val.values],
+              [mean_vec[8] - s1*dir_val.vectors[:, nb_channels][8]*dir_val.values, mean_vec[8] + s1*dir_val.vectors[:, nb_channels][8]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:solid)
+        plot!([mean_vec[7] - s2*dir_val.vectors[:, nb_channels-1][7]*dir_val.values, mean_vec[7] + s2*dir_val.vectors[:, nb_channels-1][7]*dir_val.values],
+              [mean_vec[8] - s2*dir_val.vectors[:, nb_channels-1][8]*dir_val.values, mean_vec[8] + s2*dir_val.vectors[:, nb_channels-1][8]*dir_val.values],
+              arrow=false, color=:black, linewidth=2, label="", linestyle=:dash)
+    end
+
+
+
+    p21 = plot(axis=false, ticks=false, labels=false)
+    xlims!((-1, 1))
+    ylims!((-1, 1))
+    annotate!(0, 0, Plots.text(names[2], :black, :center, 18))
+
+    p32 = plot(axis=false, ticks=false, labels=false)
+    xlims!((-1, 1))
+    ylims!((-1, 1))
+    annotate!(0, 0, Plots.text(names[3], :black, :center, 18))
+
+    p43 = plot(axis=false, ticks=false, labels=false)
+    xlims!((-1, 1))
+    ylims!((-1, 1))
+    annotate!(0, 0, Plots.text(names[4], :black, :center, 18))
+
+    p54 = plot(axis=false, ticks=false, labels=false)
+    xlims!((-1, 1))
+    ylims!((-1, 1))
+    annotate!(0, 0, Plots.text(names[5], :black, :center, 18))
+
+    p65 = plot(axis=false, ticks=false, labels=false)
+    xlims!((-1, 1))
+    ylims!((-1, 1))
+    annotate!(0, 0, Plots.text(names[6], :black, :center, 18))
+
+    p76 = plot(axis=false, ticks=false, labels=false)
+    xlims!((-1, 1))
+    ylims!((-1, 1))
+    annotate!(0, 0, Plots.text(names[7], :black, :center, 18))
+
+
+
+    CC = plot(p12, p21, p13, p23, p32, p14, p24, p34, p43, p15, p25, p35,
+              p45, p54, p16, p26, p36, p46, p56, p65, p17, p27, p37, p47,
+              p57, p67, p76, p18, p28, p38, p48, p58, p68, p78, size=(1000, 1000),
+              layout = @layout([° ° _ _ _ _ _; ° ° ° _ _ _ _; ° ° ° ° _ _ _;
+              ° ° ° ° ° _ _; ° ° ° ° ° ° _; ° ° ° ° ° ° °; ° ° ° ° ° ° °]), margin=3Plots.mm)
+
+    return CC
+end
+
 
 # This function plots a scatter matrix for all dimensions of the STG model
 # with the two first main directions of the dimensionality reduction technique
-function scatter_matrix(dir_val, nb_channels, g_all, mean_vec, Na_max, CaT_max, CaS_max,
-                        A_max, KCa_max, Kd_max, H_max, leak_max, s1, s2, color_p, m_shape)
+function scatter_matrix_old(dir_val, nb_channels, g_all, mean_vec, Na_max, CaT_max, CaS_max,
+                            A_max, KCa_max, Kd_max, H_max, leak_max, s1, s2, color_p, m_shape)
 
     pNaCaT = scatter(g_all[:, 1], g_all[:, 2], label="", markerstrokewidth=0.,
                      color=color_p, grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
