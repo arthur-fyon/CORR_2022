@@ -1,5 +1,5 @@
 #=
-This file contains all derivatives of STG model gating functions
+This file contains all derivatives of DA model gating functions
 =#
 
 dboltz(V,A,B) = exp(-(V-A)/B) / (B * (exp(-(V-A)/B) + 1)^2) #boltz(V, A, B) = 1 / (1 + exp(-(V-A)/B))
