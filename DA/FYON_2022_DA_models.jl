@@ -41,6 +41,154 @@ function DA_ODE(du, u, p, t)
     du[8] = aiERG(V) * oERG - biERG(V) * iERG
 end
 
+## DA model from Drion 2011 - current-clamp mode
+function DA_ODE_HS(du, u, p, t)
+    # Parameters
+    Iapp  = p[1](t) # Amplitude of constant applied current
+    gNa   = p[2]    # Sodium current maximal conductance
+    gKd   = p[3]    # Delayed-rectifier potassium current maximal conductance
+    gCaL  = p[4]    # L-type calcium current maximal conductance
+    gCaN  = p[5]    # N-type calcium current maximal conductance
+    gERG  = p[6]    # ERG potassium current maximal conductance
+    gNMDA = p[7]    # NMDA current maximal conductance
+    gleak = p[8]    # Leak current maximal conductance
+    C     = p[9]    # Membrane capacitance
+
+    # Variables
+    V    = u[1] # Membrane potential
+    m    = u[2] # Sodium current activation
+    h    = u[3] # Sodium current inactivation
+    n    = u[4] # Delayed-rectifier potassium current activation
+    mCaL = u[5] # L-type calcium current activation
+    mCaN = u[6] # N-type calcium current activation
+    oERG = u[7] # ERG potassium current activation
+    iERG = u[8] # ERG current intermediate
+
+    # ODEs
+    du[1]= 1/C*(- gNa*m^3*h*(V-VNa) - gKd*n^3*(V-VK) - gCaL*mCaL^2*(V-VCa) -
+                  gCaN*mCaN*(V-VCa) - gERG*oERG*(V-VK) - gleak*(V-Vleak) -
+                  gNMDA*(V-VNMDA) / (1 + Mg*exp(-0.08*V)/10.) + Iapp)
+
+    du[2] = (1/tau_m(V)) * (m_inf(V) - m)
+    du[3] = (1/tau_h(V)) * (h_inf(V) - h)
+    du[4] = (1/tau_n(V)) * (n_inf(V) - n)
+    du[5] = (1/tau_mCaL(V)) * (mCaL_inf(V) - mCaL)
+    du[6] = (1/tau_mCaN(V)) * (mCaN_inf(V) - mCaN)
+    du[7] = a0ERG(V) * (1-oERG-iERG) + biERG(V) * iERG - oERG * (aiERG(V)+b0ERG(V))
+    du[8] = aiERG(V) * oERG - biERG(V) * iERG
+end
+
+## DA model from Drion 2011 - current-clamp mode
+function DA_ODE_CR2(du, u, p, t)
+    # Parameters
+    Iapp  = p[1]    # Amplitude of constant applied current
+    gNa   = p[2]    # Sodium current maximal conductance
+    gKd   = p[3]    # Delayed-rectifier potassium current maximal conductance
+    gCaL  = p[4](t) # L-type calcium current maximal conductance
+    gCaN  = p[5]    # N-type calcium current maximal conductance
+    gERG  = p[6]    # ERG potassium current maximal conductance
+    gNMDA = p[7]    # NMDA current maximal conductance
+    gleak = p[8]    # Leak current maximal conductance
+    C     = p[9]    # Membrane capacitance
+
+    # Variables
+    V    = u[1] # Membrane potential
+    m    = u[2] # Sodium current activation
+    h    = u[3] # Sodium current inactivation
+    n    = u[4] # Delayed-rectifier potassium current activation
+    mCaL = u[5] # L-type calcium current activation
+    mCaN = u[6] # N-type calcium current activation
+    oERG = u[7] # ERG potassium current activation
+    iERG = u[8] # ERG current intermediate
+
+    # ODEs
+    du[1]= 1/C*(- gNa*m^3*h*(V-VNa) - gKd*n^3*(V-VK) - gCaL*mCaL^2*(V-VCa) -
+                  gCaN*mCaN*(V-VCa) - gERG*oERG*(V-VK) - gleak*(V-Vleak) -
+                  gNMDA*(V-VNMDA) / (1 + Mg*exp(-0.08*V)/10.) + Iapp)
+
+    du[2] = (1/tau_m(V)) * (m_inf(V) - m)
+    du[3] = (1/tau_h(V)) * (h_inf(V) - h)
+    du[4] = (1/tau_n(V)) * (n_inf(V) - n)
+    du[5] = (1/tau_mCaL(V)) * (mCaL_inf(V) - mCaL)
+    du[6] = (1/tau_mCaN(V)) * (mCaN_inf(V) - mCaN)
+    du[7] = a0ERG(V) * (1-oERG-iERG) + biERG(V) * iERG - oERG * (aiERG(V)+b0ERG(V))
+    du[8] = aiERG(V) * oERG - biERG(V) * iERG
+end
+
+## DA model from Drion 2011 - current-clamp mode
+function DA_ODE_CR3(du, u, p, t)
+    # Parameters
+    Iapp  = p[1]    # Amplitude of constant applied current
+    gNa   = p[2]    # Sodium current maximal conductance
+    gKd   = p[3]    # Delayed-rectifier potassium current maximal conductance
+    gCaL  = p[4](t) # L-type calcium current maximal conductance
+    gCaN  = p[5]    # N-type calcium current maximal conductance
+    gERG  = p[6](t) # ERG potassium current maximal conductance
+    gNMDA = p[7]    # NMDA current maximal conductance
+    gleak = p[8]    # Leak current maximal conductance
+    C     = p[9]    # Membrane capacitance
+
+    # Variables
+    V    = u[1] # Membrane potential
+    m    = u[2] # Sodium current activation
+    h    = u[3] # Sodium current inactivation
+    n    = u[4] # Delayed-rectifier potassium current activation
+    mCaL = u[5] # L-type calcium current activation
+    mCaN = u[6] # N-type calcium current activation
+    oERG = u[7] # ERG potassium current activation
+    iERG = u[8] # ERG current intermediate
+
+    # ODEs
+    du[1]= 1/C*(- gNa*m^3*h*(V-VNa) - gKd*n^3*(V-VK) - gCaL*mCaL^2*(V-VCa) -
+                  gCaN*mCaN*(V-VCa) - gERG*oERG*(V-VK) - gleak*(V-Vleak) -
+                  gNMDA*(V-VNMDA) / (1 + Mg*exp(-0.08*V)/10.) + Iapp)
+
+    du[2] = (1/tau_m(V)) * (m_inf(V) - m)
+    du[3] = (1/tau_h(V)) * (h_inf(V) - h)
+    du[4] = (1/tau_n(V)) * (n_inf(V) - n)
+    du[5] = (1/tau_mCaL(V)) * (mCaL_inf(V) - mCaL)
+    du[6] = (1/tau_mCaN(V)) * (mCaN_inf(V) - mCaN)
+    du[7] = a0ERG(V) * (1-oERG-iERG) + biERG(V) * iERG - oERG * (aiERG(V)+b0ERG(V))
+    du[8] = aiERG(V) * oERG - biERG(V) * iERG
+end
+
+## DA model from Drion 2011 - current-clamp mode
+function DA_ODE_CR(du, u, p, t)
+    # Parameters
+    Iapp  = p[1]    # Amplitude of constant applied current
+    gNa   = p[2]    # Sodium current maximal conductance
+    gKd   = p[3]    # Delayed-rectifier potassium current maximal conductance
+    gCaL  = p[4]    # L-type calcium current maximal conductance
+    gCaN  = p[5](t) # N-type calcium current maximal conductance
+    gERG  = p[6]    # ERG potassium current maximal conductance
+    gNMDA = p[7]    # NMDA current maximal conductance
+    gleak = p[8]    # Leak current maximal conductance
+    C     = p[9]    # Membrane capacitance
+
+    # Variables
+    V    = u[1] # Membrane potential
+    m    = u[2] # Sodium current activation
+    h    = u[3] # Sodium current inactivation
+    n    = u[4] # Delayed-rectifier potassium current activation
+    mCaL = u[5] # L-type calcium current activation
+    mCaN = u[6] # N-type calcium current activation
+    oERG = u[7] # ERG potassium current activation
+    iERG = u[8] # ERG current intermediate
+
+    # ODEs
+    du[1]= 1/C*(- gNa*m^3*h*(V-VNa) - gKd*n^3*(V-VK) - gCaL*mCaL^2*(V-VCa) -
+                  gCaN*mCaN*(V-VCa) - gERG*oERG*(V-VK) - gleak*(V-Vleak) -
+                  gNMDA*(V-VNMDA) / (1 + Mg*exp(-0.08*V)/10.) + Iapp)
+
+    du[2] = (1/tau_m(V)) * (m_inf(V) - m)
+    du[3] = (1/tau_h(V)) * (h_inf(V) - h)
+    du[4] = (1/tau_n(V)) * (n_inf(V) - n)
+    du[5] = (1/tau_mCaL(V)) * (mCaL_inf(V) - mCaL)
+    du[6] = (1/tau_mCaN(V)) * (mCaN_inf(V) - mCaN)
+    du[7] = a0ERG(V) * (1-oERG-iERG) + biERG(V) * iERG - oERG * (aiERG(V)+b0ERG(V))
+    du[8] = aiERG(V) * oERG - biERG(V) * iERG
+end
+
 ## DA model from Drion 2011 - current-clamp mode with hyperpolarizing step
 function DA_hyper_ODE(du, u, p, t)
     # Parameters
