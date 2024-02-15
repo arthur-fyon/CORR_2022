@@ -1,4 +1,4 @@
-# Insert title of article
+# Dimensionality reduction of neuronal degeneracy reveals two interfering physiological mechanisms
 
 ## What do you find in this repository?
 
