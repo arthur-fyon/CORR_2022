@@ -3,8 +3,8 @@ message: "If you use this software, please cite it as below."
 authors:
   - family-names: Fyon
     given-names: Arthur
-    orcid: https://orcid.org/1234-5678-9101-1121
-title: "My Research Software"
+    orcid: https://orcid.org/0009-0008-0771-8767
+title: "Dimensionality reduction of neuronal degeneracy reveals two interfering physiological mechanisms"
 version: 1.0.0
 identifiers:
   - type: doi
