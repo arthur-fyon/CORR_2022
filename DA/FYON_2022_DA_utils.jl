@@ -436,8 +436,8 @@ function scatter_matrix3x3_zcolor(g_all, maxs, Rin, m_shape, names; flag=0, dir_
     end
 
     p12 = scatter(g_all[:, 1], g_all[:, 2], label="", markerstrokewidth=msw_main, zcolor=Rin, top_margin=12Plots.mm, legend=false,
-                  c=cgrad(:thermal, rev=false), grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
-    
+                  c=cgrad(:thermal, rev=false), clims=(13, 45), grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+
     annotate!(maxs[1]/2, maxs[2]*1.3, Plots.text(names[1], :black, :center, 18))
 
     xlims!((0, maxs[1]))
@@ -460,7 +460,7 @@ function scatter_matrix3x3_zcolor(g_all, maxs, Rin, m_shape, names; flag=0, dir_
 
 
     p13 = scatter(g_all[:, 1], g_all[:, 3], label="", markerstrokewidth=msw_main, zcolor=Rin, legend=false,
-                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+                  c=cgrad(:thermal, rev=false), clims=(13, 45), grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
 
     xlims!((0, maxs[1]))
     ylims!((0, maxs[3]))
@@ -481,7 +481,7 @@ function scatter_matrix3x3_zcolor(g_all, maxs, Rin, m_shape, names; flag=0, dir_
 
 
     p14 = scatter(g_all[:, 1], g_all[:, 4], label="", markerstrokewidth=msw_main, zcolor=Rin, legend=false,
-                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+                  c=cgrad(:thermal, rev=false), clims=(13, 45), grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
 
     xlims!((0, maxs[1]))
     ylims!((0, maxs[4]))
@@ -502,7 +502,7 @@ function scatter_matrix3x3_zcolor(g_all, maxs, Rin, m_shape, names; flag=0, dir_
 
 
     p23 = scatter(g_all[:, 2], g_all[:, 3], label="", markerstrokewidth=msw_main, zcolor=Rin, legend=false,
-                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+                  c=cgrad(:thermal, rev=false), clims=(13, 45), grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
 
     xlims!((0, maxs[2]))
     ylims!((0, maxs[3]))
@@ -523,7 +523,7 @@ function scatter_matrix3x3_zcolor(g_all, maxs, Rin, m_shape, names; flag=0, dir_
 
 
     p24 = scatter(g_all[:, 2], g_all[:, 4], label="", markerstrokewidth=msw_main, zcolor=Rin, legend=false,
-                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
+                  c=cgrad(:thermal, rev=false), clims=(13, 45), grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18)
 
     xlims!((0, maxs[2]))
     ylims!((0, maxs[4]))
@@ -544,7 +544,7 @@ function scatter_matrix3x3_zcolor(g_all, maxs, Rin, m_shape, names; flag=0, dir_
 
 
     p34 = scatter(g_all[:, 3], g_all[:, 4], label="", markerstrokewidth=msw_main, zcolor=Rin, right_margin=15Plots.mm,
-                  grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18, legend=false)
+                  c=cgrad(:thermal, rev=false), clims=(13, 45), grid=false, ticks=false, tickfontsize=10, markershape=m_shape, guidefontsize=18, legend=false)
 
     annotate!(maxs[3]*1.3, maxs[4]/2, Plots.text(names[4], :black, :center, 18))
     xlims!((0, maxs[3]))
